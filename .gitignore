@@ -1,0 +1,9 @@
+.DS_Store
+*.sw*
+*~
+build/
+bin/
+node_modules/
+vendor/
+nbproject
+shopper

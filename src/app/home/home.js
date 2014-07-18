@@ -90,6 +90,14 @@ angular.module('shopper.home', [
   };
   self.getListProducts();
   
+  this.getList = function(list_id) {
+    var params = Api.getParams();
+    params.cmd = 'get_lists_of_user';
+    params.product_id = product.id;
+    params.list_id = list.id;
+    return $http.get(Api.url, { params: params });
+  };
+  
   this.addProductToList = function(product, list) {
     var params = Api.getParams();
     params.cmd = 'add_product_to_list';

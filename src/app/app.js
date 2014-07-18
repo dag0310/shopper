@@ -15,25 +15,41 @@ angular.module('shopper', [
   
 })
 .controller('AppCtrl', function($scope, $location, Session) {
+  if (typeof localStorage.email === 'string' && typeof localStorage.password === 'string') {
+    Session.login(localStorage.email, localStorage.password);
+    $location.path('/home');
+  }
+  
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+    if (! Session.isLoggedIn()) {
+      $location.path('/auth');
+    }
   });
   
-  if (typeof localStorage.email === 'string' && typeof localStorage.password === 'string') {
-    Session.setSession(localStorage.email, localStorage.password);
-  }
+  $scope.logout = function() {
+    Session.logout();
+    $location.path('/auth');
+  };
 })
 .service('Session', function() {
   var self = this;
   this.email = undefined;
-  this.password =  undefined;
+  this.password = undefined;
   
-  this.setSession = function(email, password) {
+  this.login = function(email, password) {
     self.email = email;
     self.password = password;
   };
   
+  this.logout = function() {
+    self.email = undefined;
+    self.password = undefined;
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+  };
+  
   this.isLoggedIn = function() {
-    return (self.email !== undefined && self.password !== undefined) ? true : false;
+    return (self.email && self.password) ? true : false;
   };
 })
 .service('Api', function(Session) {

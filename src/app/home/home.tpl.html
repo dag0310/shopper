@@ -1,19 +1,21 @@
 <!--List selection-->
 <select ng-model="currentList" ng-options="list.name for list in lists" ng-click="selectList()"></select>
-{{currentList.name}}
+<h3>{{currentList.name}}</h3>
+
 <!--Shopping list-->
-<ul class="product-list">
-  <li ng-repeat="product in listProducts | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
+<div class="product-list basket" ng-show="listProducts.length > 0">
+  <button class="product" ng-repeat="product in listProducts | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
     {{product.name}}
-  </li>
-</ul>
+  </button>
+</div>
+<div ng-show="! listProducts" class="help-block">This list is empty.</div>
 
 <!--Search-->
-<input ng-model="productSearchQuery" class="form-control input-sm" placeholder="What shops?">
+<input ng-model="productSearchQuery" class="form-control input-lg" placeholder="Search...">
 
 <!--Filtered products-->
-<ul class="product-list">
-  <li ng-repeat="product in allProducts | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
+<div class="product-list">
+  <button class="product" ng-repeat="product in allProducts | limitTo:15 | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
     {{product.name}}
-  </li>
-</ul>
+  </button>
+</div>

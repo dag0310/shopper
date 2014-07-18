@@ -13,6 +13,10 @@ angular.module('shopper.auth', [
   });
 })
 .controller('AuthCtrl', function($scope, $location, AuthService, Session) {
+  if (Session.isLoggedIn()) {
+    $location.path('/home');
+  }
+  
   var loginStr = 'Login', registerStr = 'Register';
   $scope.authButtonText = loginStr + ' / ' + registerStr;
   $scope.rememberMe = true;
@@ -32,8 +36,7 @@ angular.module('shopper.auth', [
               localStorage.email = $scope.email;
               localStorage.password = $scope.password;
             }
-            Session.email = $scope.email;
-            Session.password = $scope.password;
+            Session.login($scope.email, $scope.password);
             $location.path('/home');
           } else {
             alert('Wrong password :(');

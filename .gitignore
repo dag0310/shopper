@@ -4,6 +4,5 @@
 build/
 bin/
 node_modules/
-vendor/
-nbproject
+nbproject/private
 shopper

@@ -1,1 +1,19 @@
-This is the home page :)
+<!--List selection-->
+<select ng-model="currentList" ng-options="list.name for list in lists" ng-click="selectList()"></select>
+{{currentList.name}}
+<!--Shopping list-->
+<ul class="product-list">
+  <li ng-repeat="product in listProducts | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
+    {{product.name}}
+  </li>
+</ul>
+
+<!--Search-->
+<input ng-model="productSearchQuery" class="form-control input-sm" placeholder="What shops?">
+
+<!--Filtered products-->
+<ul class="product-list">
+  <li ng-repeat="product in allProducts | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
+    {{product.name}}
+  </li>
+</ul>

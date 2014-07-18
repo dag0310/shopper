@@ -5,10 +5,19 @@
     
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="author" content="Daniel Geymayer">
+    <meta name="description" content="The simple shareable shopping list">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+<!--    <link rel="icon" href="img/favicon.png?v=2" type="image/png">
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-precomposed.png">
+    <link rel="apple-touch-startup-image" href="img/startup.png">-->
+  
     <!-- font awesome from BootstrapCDN -->
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!--<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">-->
 
     <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
     <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
@@ -17,6 +26,10 @@
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
   </head>
   <body>
+    <nav>
+      Friends, Lists, Products, Categories, Menu
+    </nav>
+    
     <div ui-view="main"></div>
   </body>
 </html>

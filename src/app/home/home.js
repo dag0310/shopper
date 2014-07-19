@@ -13,6 +13,10 @@ angular.module('shopper.home', [
   });
 })
 .controller('HomeCtrl', function($scope, $rootScope, HomeService) {
+  HomeService.getListsWithProductsOfUser();
+  HomeService.getAllProducts();
+  
+  $scope.lists = [];
   $scope.currentListIndex = 0;
   
   $scope.$on('updateAllProducts', function(evt, data) {
@@ -23,46 +27,67 @@ angular.module('shopper.home', [
     $scope.lists = data;
   });
   
+  $scope.refresh = function() {
+    HomeService.getAllProducts();
+    HomeService.getListsWithProductsOfUser();
+  };
+  
   $scope.addCustomProductToList = function() {
-    HomeService.addCustomProductToList($scope.productSearchQuery, $scope.lists[$scope.currentListIndex]).success(function(data) {
-//      console.log(data);
+    var name = $scope.productSearchQuery;
+    
+    HomeService.addCustomProductToList(name, $scope.lists[$scope.currentListIndex]).success(function(data) {
+      $scope.refresh();
     });
+    
     $scope.productSearchQuery = '';
+  };
+  
+  $scope.isProductInList = function(product, list) {
+    for (var i = 0; i < list.products.length; i++) {
+      if (product.id === list.products[i].id) {
+        return true;
+      }
+    }
+    return false;
   };
   
   $scope.addProductToList = function(product) {
-    $scope.productSearchQuery = '';
-    HomeService.addProductToList(product, $scope.lists[$scope.currentListIndex]).success(function(data) {
+    var currentList = $scope.lists[$scope.currentListIndex];
+    if ($scope.isProductInList(product, currentList)) {
+      return;
+    }
+    
+    HomeService.addProductToList(product, currentList).success(function(data) {
 //      console.log(data);
     });
+    if (currentList.length === 0) {
+      currentList.products = [];
+    }
+    currentList.products.push(product);
+    
+    $scope.productSearchQuery = '';
   };
   
   $scope.removeProductFromList = function(product) {
-    HomeService.removeProductFromList(product, $scope.lists[$scope.currentListIndex]).success(function(data) {
+    var currentList = $scope.lists[$scope.currentListIndex];
+    HomeService.removeProductFromList(product, currentList).success(function(data) {
 //      console.log(data);
     });
+    
+    currentList.products.splice(currentList.products.indexOf(product), 1);
   };
 })
-.service('HomeService', function($http, $rootScope, $interval, Api, Session) {
-  var self = this;
-  
-  var promiseGetAllProducts = $interval(function() {
-    self.getAllProducts();
-  }, 1500); // 1500
+.service('HomeService', function($http, $rootScope, Api, Session) {
   this.getAllProducts = function() {
     var params = Api.getParams();
     params.cmd = 'get_all_products';
     params.user_id = Session.user.id;
     
-    return $http.get(Api.url, { params: params }).success(function(data) {
+    $http.get(Api.url, { params: params }).success(function(data) {
       $rootScope.$broadcast('updateAllProducts', data);
     });
   };
-  self.getAllProducts();
   
-  var promiseGetListProducts = $interval(function() {
-    self.getListsWithProductsOfUser();
-  }, 500); // 500
   this.getListsWithProductsOfUser = function() {
     var params = Api.getParams();
     params.cmd = 'get_lists_with_products_of_user';
@@ -72,7 +97,6 @@ angular.module('shopper.home', [
       $rootScope.$broadcast('updateLists', data);
     });
   };
-  self.getListsWithProductsOfUser();
   
   this.addProductToList = function(product, list) {
     var params = Api.getParams();

@@ -40,7 +40,7 @@ angular.module('shopper.home', [
   
   var promiseGetAllProducts = $interval(function() {
     self.getAllProducts();
-  }, 500000); // 1500
+  }, 1500); // 1500
   this.getAllProducts = function() {
     var params = Api.getParams();
     params.cmd = 'get_all_products';
@@ -53,7 +53,7 @@ angular.module('shopper.home', [
   
   var promiseGetListProducts = $interval(function() {
     self.getListsWithProductsOfUser();
-  }, 350000); // 500
+  }, 500); // 500
   this.getListsWithProductsOfUser = function() {
     var params = Api.getParams();
     params.cmd = 'get_lists_with_products_of_user';

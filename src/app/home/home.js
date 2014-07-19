@@ -13,11 +13,11 @@ angular.module('shopper.home', [
   });
 })
 .controller('HomeCtrl', function($scope, $rootScope, HomeService) {
-  HomeService.getListsWithProductsOfUser();
-  HomeService.getAllProducts();
-  
   $scope.lists = [];
   $scope.currentListIndex = 0;
+  
+  HomeService.getListsWithProductsOfUser();
+  HomeService.getAllProducts();
   
   $scope.$on('updateAllProducts', function(evt, data) {
     $scope.allProducts = data;
@@ -42,9 +42,14 @@ angular.module('shopper.home', [
     $scope.productSearchQuery = '';
   };
   
-  $scope.isProductInList = function(product, list) {
-    for (var i = 0; i < list.products.length; i++) {
-      if (product.id === list.products[i].id) {
+  $scope.isProductInList = function(product) {
+    var currentList = $scope.lists[$scope.currentListIndex];
+    if (currentList === undefined) {
+      return false;
+    }
+    
+    for (var i = 0; i < currentList.products.length; i++) {
+      if (product.id === currentList.products[i].id) {
         return true;
       }
     }
@@ -53,16 +58,13 @@ angular.module('shopper.home', [
   
   $scope.addProductToList = function(product) {
     var currentList = $scope.lists[$scope.currentListIndex];
-    if ($scope.isProductInList(product, currentList)) {
+    if ($scope.isProductInList(product)) {
       return;
     }
     
     HomeService.addProductToList(product, currentList).success(function(data) {
 //      console.log(data);
     });
-    if (currentList.length === 0) {
-      currentList.products = [];
-    }
     currentList.products.push(product);
     
     $scope.productSearchQuery = '';

@@ -15,7 +15,7 @@
     <!--<ul class="nav navbar-nav">-->
       <!--<li><a href="#">Link</a></li>-->
     <!--</ul>-->
-    <form class="navbar-form navbar-left" role="search">
+    <form class="navbar-form navbar-left" role="search" ng-submit="addCustomProductToList()">
       <div class="form-group">
         <input ng-model="productSearchQuery" class="form-control" placeholder="Search...">
       </div>
@@ -34,7 +34,7 @@
 <!--Filtered products-->
 <div class="product-list" ng-show="productSearchQuery">
   <button class="product" ng-click="addCustomProductToList()">{{productSearchQuery}}</button>
-  <button class="product" ng-repeat="product in allProducts | filter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)" ng-disabled="isProductInList(product, lists[currentListIndex])">
+  <button class="product" ng-repeat="product in allProducts | filter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)" ng-hide="isProductInList(product)">
     {{product.name}}
   </button>
 </div>
@@ -47,12 +47,12 @@
     <h3>{{list.name}}</h3>
 
     <!--Shopping list-->
-    <div class="product-list selected" ng-show="list.products">
+    <div class="product-list selected" ng-hide="list.products.length === 0">
       <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
         {{product.name}}
       </button>
     </div>
-    <div ng-show="! list.products" class="help-block">This list is empty.</div>
+    <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
   </li>
 </ul>
 </div>

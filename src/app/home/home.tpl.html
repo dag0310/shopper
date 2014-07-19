@@ -30,6 +30,16 @@
   </div>
 </nav>
 
+<!--Filtered products-->
+<div class="product-list" ng-show="productSearchQuery">
+  <button class="product" ng-click="addCustomProductToList()">{{productSearchQuery}}</button>
+  <button class="product" ng-repeat="product in allProducts | limitTo:15 | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
+    {{product.name}}
+  </button>
+</div>
+
+<!--Carousel of lists-->
+<div class="my-list">
 <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
   <li ng-repeat="list in lists">
     <!--Name of current list-->
@@ -42,13 +52,6 @@
       </button>
     </div>
     <div ng-show="! list.products" class="help-block">This list is empty.</div>
-
-
-    <!--Filtered products-->
-    <div class="product-list">
-      <button class="product" ng-repeat="product in allProducts | limitTo:15 | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
-        {{product.name}}
-      </button>
-    </div>
   </li>
 </ul>
+</div>

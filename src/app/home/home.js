@@ -23,7 +23,15 @@ angular.module('shopper.home', [
     $scope.lists = data;
   });
   
+  $scope.addCustomProductToList = function() {
+    HomeService.addCustomProductToList($scope.productSearchQuery, $scope.lists[$scope.currentListIndex]).success(function(data) {
+//      console.log(data);
+    });
+    $scope.productSearchQuery = '';
+  };
+  
   $scope.addProductToList = function(product) {
+    $scope.productSearchQuery = '';
     HomeService.addProductToList(product, $scope.lists[$scope.currentListIndex]).success(function(data) {
 //      console.log(data);
     });
@@ -44,6 +52,7 @@ angular.module('shopper.home', [
   this.getAllProducts = function() {
     var params = Api.getParams();
     params.cmd = 'get_all_products';
+    params.user_id = Session.user.id;
     
     return $http.get(Api.url, { params: params }).success(function(data) {
       $rootScope.$broadcast('updateAllProducts', data);
@@ -70,6 +79,15 @@ angular.module('shopper.home', [
     params.cmd = 'add_product_to_list';
     params.product_id = product.id;
     params.list_id = list.id;
+    return $http.get(Api.url, { params: params });
+  };
+  
+  this.addCustomProductToList = function(name, list) {
+    var params = Api.getParams();
+    params.cmd = 'add_custom_product_to_list';
+    params.name = name;
+    params.list_id = list.id;
+    params.user_id = Session.user.id;
     return $http.get(Api.url, { params: params });
   };
   

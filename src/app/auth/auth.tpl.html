@@ -1,6 +1,6 @@
 <form class="form-signin" novalidate ng-submit="performLogin()">
   <h2 class="form-signin-heading">Shopper</h2>
-  <input type="text" class="form-control" placeholder="E-mail" required autofocus ng-model="email" ng-blur="refreshButtonText()">
+  <input type="email" novalidate class="form-control" placeholder="E-mail" required autofocus ng-model="email" ng-blur="refreshButtonText()">
   <input type="password" class="form-control" placeholder="Password" required ng-model="password">
   <div class="checkbox">
     <label><input type="checkbox" value="remember-me" ng-model="rememberMe"> Remember me</label>

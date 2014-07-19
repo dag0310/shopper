@@ -1,4 +1,8 @@
 angular.module('shopper', [
+  'ngTouch',
+  'ngAnimate',
+  'hmTouchEvents',
+  'angular-carousel',
   'templates-app',
   'templates-common',
   'ui.router',
@@ -15,8 +19,8 @@ angular.module('shopper', [
   
 })
 .controller('AppCtrl', function($scope, $location, Session) {
-  if (typeof localStorage.email === 'string' && typeof localStorage.password === 'string') {
-    Session.login(localStorage.email, localStorage.password);
+  if (typeof localStorage.user !== 'undefined') {
+    Session.login(JSON.parse(localStorage.user));
     $location.path('/home');
   }
   
@@ -33,33 +37,33 @@ angular.module('shopper', [
 })
 .service('Session', function() {
   var self = this;
-  this.email = undefined;
-  this.password = undefined;
+  this.user = undefined;
   
-  this.login = function(email, password) {
-    self.email = email;
-    self.password = password;
+  this.login = function(user) {
+    self.user = user;
   };
   
   this.logout = function() {
-    self.email = undefined;
-    self.password = undefined;
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
+    self.user = undefined;
+    localStorage.removeItem('user');
   };
   
   this.isLoggedIn = function() {
-    return (self.email && self.password) ? true : false;
+    return (self.user) ? true : false;
   };
 })
 .service('Api', function(Session) {
   this.url = '../api/';
 
   this.getParams = function() {
-    return {
-      email: Session.email,
-      password: Session.password
-    };
+    var params = {};
+    if (Session.user !== undefined) {
+      params =  {
+        email: Session.user.email,
+        password: Session.user.password
+      };
+    }
+    return params;
   };
 })
 ;

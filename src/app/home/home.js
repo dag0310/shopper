@@ -13,56 +13,34 @@ angular.module('shopper.home', [
   });
 })
 .controller('HomeCtrl', function($scope, $rootScope, HomeService) {
-  $rootScope.lists = [
-  {
-    id: 1,
-    name: 'Einkaufsliste'
-  },
-  {
-    id: 2,
-    name: 'Test'
-  },
-  {
-    id: 3,
-    name: 'Abc'
-  }
-  ];
-  
-  $rootScope.currentList = $rootScope.lists[0];
-  
-  $scope.selectList = function() {
-    HomeService.currentList = $rootScope.currentList;
-  };
+  $scope.currentListIndex = 0;
   
   $scope.$on('updateAllProducts', function(evt, data) {
     $scope.allProducts = data;
   });
   
-  $scope.$on('updateListProducts', function(evt, data) {
-    $scope.listProducts = data;
+  $scope.$on('updateLists', function(evt, data) {
+    $scope.lists = data;
   });
   
   $scope.addProductToList = function(product) {
-    HomeService.currentList = $rootScope.lists[1];
-    HomeService.addProductToList(product, $scope.currentList).success(function(data) {
-      console.log(data);
+    HomeService.addProductToList(product, $scope.lists[$scope.currentListIndex]).success(function(data) {
+//      console.log(data);
     });
   };
   
   $scope.removeProductFromList = function(product) {
-    HomeService.removeProductFromList(product, $scope.currentList).success(function(data) {
-      console.log(data);
+    HomeService.removeProductFromList(product, $scope.lists[$scope.currentListIndex]).success(function(data) {
+//      console.log(data);
     });
   };
 })
-.service('HomeService', function($http, $rootScope, $interval, Api) {
+.service('HomeService', function($http, $rootScope, $interval, Api, Session) {
   var self = this;
-
-  this.currentList = undefined;
   
   var promiseGetAllProducts = $interval(function() {
     self.getAllProducts();
-  }, 1500);
+  }, 500000); // 1500
   this.getAllProducts = function() {
     var params = Api.getParams();
     params.cmd = 'get_all_products';
@@ -74,29 +52,18 @@ angular.module('shopper.home', [
   self.getAllProducts();
   
   var promiseGetListProducts = $interval(function() {
-    self.getListProducts();
-  }, 300);
-  this.getListProducts = function() {
-    var currentList = self.currentList;
+    self.getListsWithProductsOfUser();
+  }, 350000); // 500
+  this.getListsWithProductsOfUser = function() {
     var params = Api.getParams();
-    params.cmd = 'get_products_on_list';
+    params.cmd = 'get_lists_with_products_of_user';
+    params.user_id = Session.user.id;
     
-    if (currentList !== undefined) {
-      params.list_id = currentList.id;
-      $http.get(Api.url, { params: params }).success(function(data) {
-        $rootScope.$broadcast('updateListProducts', data);
-      });
-    }
+    $http.get(Api.url, { params: params }).success(function(data) {
+      $rootScope.$broadcast('updateLists', data);
+    });
   };
-  self.getListProducts();
-  
-  this.getList = function(list_id) {
-    var params = Api.getParams();
-    params.cmd = 'get_lists_of_user';
-    params.product_id = product.id;
-    params.list_id = list.id;
-    return $http.get(Api.url, { params: params });
-  };
+  self.getListsWithProductsOfUser();
   
   this.addProductToList = function(product, list) {
     var params = Api.getParams();

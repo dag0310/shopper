@@ -1,21 +1,25 @@
-<!--List selection-->
-<select ng-model="currentList" ng-options="list.name for list in lists" ng-click="selectList()"></select>
-<h3>{{currentList.name}}</h3>
-
-<!--Shopping list-->
-<div class="product-list basket" ng-show="listProducts.length > 0">
-  <button class="product" ng-repeat="product in listProducts | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
-    {{product.name}}
-  </button>
-</div>
-<div ng-show="! listProducts" class="help-block">This list is empty.</div>
-
 <!--Search-->
 <input ng-model="productSearchQuery" class="form-control input-lg" placeholder="Search...">
 
-<!--Filtered products-->
-<div class="product-list">
-  <button class="product" ng-repeat="product in allProducts | limitTo:15 | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
-    {{product.name}}
-  </button>
-</div>
+<ul rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
+  <li class="list-carousel" ng-repeat="list in lists">
+    <!--Name of current list-->
+    <h3>{{list.name}}</h3>
+
+    <!--Shopping list-->
+    <div class="product-list selected" ng-show="list.products.length > 0">
+      <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
+        {{product.name}}
+      </button>
+    </div>
+    <div ng-show="! list.products" class="help-block">This list is empty.</div>
+
+
+    <!--Filtered products-->
+    <div class="product-list">
+      <button class="product" ng-repeat="product in allProducts | limitTo:15 | filter:productSearchQuery | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)">
+        {{product.name}}
+      </button>
+    </div>
+  </li>
+</ul>

@@ -32,12 +32,13 @@ angular.module('shopper.auth', [
       if (data.result) {
         AuthService.checkIfLoginIsValid($scope.email, $scope.password).success(function(data) {
           if (data.result) {
-            if ($scope.rememberMe) {
-              localStorage.email = $scope.email;
-              localStorage.password = $scope.password;
-            }
-            Session.login($scope.email, $scope.password);
-            $location.path('/home');
+            AuthService.getUserByEmail($scope.email).success(function(user) {
+              if ($scope.rememberMe) {
+                localStorage.user = JSON.stringify(user);
+              }
+              Session.login(user);
+              $location.path('/home');
+            });
           } else {
             alert('Wrong password :(');
           }
@@ -75,6 +76,13 @@ angular.module('shopper.auth', [
     params.cmd = 'create_user';
     params.email = email;
     params.password = password;
+    return $http.get(Api.url, { params: params });
+  };
+  
+  this.getUserByEmail = function(email) {
+    var params = Api.getParams();
+    params.cmd = 'get_user_by_email';
+    params.email = email;
     return $http.get(Api.url, { params: params });
   };
 })

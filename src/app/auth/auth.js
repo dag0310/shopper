@@ -22,6 +22,7 @@ angular.module('shopper.auth', [
   $scope.rememberMe = true;
   $scope.authButtonText = loginStr + ' / ' + registerStr;
   $scope.emailInvalid = false;
+  $scope.passwordInvalid = false;
   
   $scope.refreshButtonText = function() {
     if ($scope.email && $scope.email.trim() !== '') {
@@ -39,6 +40,7 @@ angular.module('shopper.auth', [
       if (data.result) {
         AuthService.checkIfLoginIsValid($scope.email, $scope.password).success(function(data) {
           if (data.result) {
+            $scope.passwordInvalid = false;
             AuthService.getUserByEmail($scope.email).success(function(user) {
               if ($scope.rememberMe) {
                 localStorage.user = JSON.stringify(user);
@@ -47,7 +49,8 @@ angular.module('shopper.auth', [
               $location.path('/home');
             });
           } else {
-            alert('Wrong password :(');
+            $scope.passwordInvalid = true;
+            $scope.password = '';
           }
         });
       } else {

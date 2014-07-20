@@ -4,7 +4,7 @@
   <div class="form-group" ng-class="{ 'has-error': emailInvalid }">
     <input type="email" class="form-control invalid" placeholder="E-mail *" autofocus required ng-model="email" ng-blur="refreshButtonText()">
   </div>
-  <div class="form-group">
+  <div class="form-group" ng-class="{ 'has-error': passwordInvalid }">
     <input type="password" class="form-control" placeholder="Password *" required ng-model="password">
   </div>
   <div class="form-group">

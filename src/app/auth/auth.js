@@ -18,13 +18,20 @@ angular.module('shopper.auth', [
   }
   
   var loginStr = 'Login', registerStr = 'Register';
-  $scope.authButtonText = loginStr + ' / ' + registerStr;
+  $scope.email = '';
   $scope.rememberMe = true;
+  $scope.authButtonText = loginStr + ' / ' + registerStr;
+  $scope.emailInvalid = false;
   
   $scope.refreshButtonText = function() {
-    AuthService.checkIfLoginExists($scope.email).success(function(data) {
-      $scope.authButtonText = data.result ? loginStr : registerStr;
-    });
+    if ($scope.email && $scope.email.trim() !== '') {
+      $scope.emailInvalid = false;
+      AuthService.checkIfLoginExists($scope.email).success(function(data) {
+        $scope.authButtonText = data.result ? loginStr : registerStr;
+      });
+    } else {
+      $scope.emailInvalid = true;
+    }
   };
   
   $scope.performLogin = function() {
@@ -44,7 +51,7 @@ angular.module('shopper.auth', [
           }
         });
       } else {
-        AuthService.registerUser($scope.email, $scope.password).success(function(data) {
+        AuthService.registerUser($scope.email, $scope.password, $scope.name).success(function(data) {
           if (data.result) {
             $scope.performLogin();
           } else {
@@ -71,11 +78,12 @@ angular.module('shopper.auth', [
     return $http.get(Api.url, { params: params });
   };
   
-  this.registerUser = function(email, password) {
+  this.registerUser = function(email, password, name) {
     var params = Api.getParams();
-    params.cmd = 'create_user';
+    params.cmd = 'register_user';
     params.email = email;
     params.password = password;
+    params.name = name;
     return $http.get(Api.url, { params: params });
   };
   

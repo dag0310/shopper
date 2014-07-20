@@ -31,6 +31,7 @@
   </div>
 </nav>
 
+<div id="outer">
 <!--Filtered products-->
 <div class="product-list" ng-show="productSearchQuery">
   <button class="product" ng-click="addCustomProductToList()">{{productSearchQuery}}</button>
@@ -41,18 +42,19 @@
 
 <!--Carousel of lists-->
 <div class="my-list">
-<ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
-  <li ng-repeat="list in lists">
-    <!--Name of current list-->
-    <h3>{{list.name}}</h3>
+  <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
+    <li ng-repeat="list in lists">
+      <!--Name of current list-->
+      <h3>{{list.name}}</h3>
 
-    <!--Shopping list-->
-    <div class="product-list selected" ng-hide="list.products.length === 0">
-      <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
-        {{product.name}}
-      </button>
-    </div>
-    <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
-  </li>
-</ul>
+      <!--Shopping list-->
+      <div class="product-list selected" ng-hide="list.products.length === 0">
+        <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
+          {{product.name}}
+        </button>
+      </div>
+      <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
+    </li>
+  </ul>
+</div>
 </div>

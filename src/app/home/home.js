@@ -13,11 +13,6 @@ angular.module('shopper.home', [
   });
 })
 .controller('HomeCtrl', function($scope, $rootScope, HomeService) {
-  $scope.lists = [];
-  $scope.currentListIndex = 0;
-  
-  $scope.refresh();
-  
   $scope.$on('updateAllProducts', function(evt, data) {
     $scope.allProducts = data;
   });
@@ -61,9 +56,7 @@ angular.module('shopper.home', [
       return;
     }
     
-    HomeService.addProductToList(product, currentList).success(function(data) {
-//      console.log(data);
-    });
+    HomeService.addProductToList(product, currentList);
     currentList.products.push(product);
     
     $scope.productSearchQuery = '';
@@ -71,10 +64,7 @@ angular.module('shopper.home', [
   
   $scope.removeProductFromList = function(product) {
     var currentList = $scope.lists[$scope.currentListIndex];
-    HomeService.removeProductFromList(product, currentList).success(function(data) {
-//      console.log(data);
-    });
-    
+    HomeService.removeProductFromList(product, currentList);
     currentList.products.splice(currentList.products.indexOf(product), 1);
   };
   
@@ -84,6 +74,11 @@ angular.module('shopper.home', [
       HomeService.getListsWithProductsOfUser();
     });
   };
+  
+  $scope.lists = [];
+  $scope.currentListIndex = 0;
+  
+  $scope.refresh();
 })
 .service('HomeService', function($http, $rootScope, Api, Session) {
   this.getAllProducts = function() {

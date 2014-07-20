@@ -2,13 +2,13 @@
 
 <form role="form" novalidate ng-submit="performLogin()">
   <div class="form-group" ng-class="{ 'has-error': emailInvalid }">
-    <input type="email" class="form-control invalid" placeholder="E-mail *" autofocus required ng-model="email" ng-blur="refreshButtonText()">
+    <input type="email" class="form-control invalid" placeholder="E-mail" autofocus required ng-model="email" ng-blur="refreshButtonText()">
   </div>
   <div class="form-group" ng-class="{ 'has-error': passwordInvalid }">
-    <input type="password" class="form-control" placeholder="Password *" required ng-model="password">
+    <input type="password" class="form-control" placeholder="Password" required ng-model="password">
   </div>
   <div class="form-group">
-    <input type="text" class="form-control" placeholder="Name" ng-model="name" ng-show="authButtonText === 'Register'">
+    <input type="text" class="form-control" placeholder="Your name (so others can find you)" ng-model="name" ng-show="authButtonText === 'Register'">
   </div>
   <div class="checkbox">
     <label>

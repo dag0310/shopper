@@ -16,8 +16,7 @@ angular.module('shopper.home', [
   $scope.lists = [];
   $scope.currentListIndex = 0;
   
-  HomeService.getListsWithProductsOfUser();
-  HomeService.getAllProducts();
+  $scope.refresh();
   
   $scope.$on('updateAllProducts', function(evt, data) {
     $scope.allProducts = data;
@@ -78,6 +77,13 @@ angular.module('shopper.home', [
     
     currentList.products.splice(currentList.products.indexOf(product), 1);
   };
+  
+  $scope.addList = function() {
+    var name = prompt('What should we call it?');
+    HomeService.addList(name).success(function(data) {
+      HomeService.getListsWithProductsOfUser();
+    });
+  };
 })
 .service('HomeService', function($http, $rootScope, Api, Session) {
   this.getAllProducts = function() {
@@ -122,6 +128,14 @@ angular.module('shopper.home', [
     params.cmd = 'remove_product_from_list';
     params.product_id = product.id;
     params.list_id = list.id;
+    return $http.get(Api.url, { params: params });
+  };
+  
+  this.addList = function(name) {
+    var params = Api.getParams();
+    params.cmd = 'add_list';
+    params.name = name;
+    params.user_id = Session.user.id;
     return $http.get(Api.url, { params: params });
   };
 })

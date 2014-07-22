@@ -1,5 +1,5 @@
 angular.module('shopper.list', [])
-.controller('ListCtrl', function($scope, $window, $rootScope, ListService, HomeService, Session) {
+.controller('ListCtrl', function($scope, $rootScope, ListService, HomeService, Session) {
   $scope.$on('showListDetail', function(scope, list) {
     $scope.showMe = ! $scope.showMe;
     if ($scope.showMe) {
@@ -49,7 +49,7 @@ angular.module('shopper.list', [])
   };
   
   $scope.unsubscribe = function() {
-    if ($window.confirm('Are you sure you want to unsubscribe from this list?!')) {
+    if (confirm('Are you sure you want to unsubscribe from this list?!')) {
       ListService.unsubscribeUserFromList(Session.user, $scope.list).success(function() {
         HomeService.getListsWithProductsOfUser().success(function() {
           $rootScope.$broadcast('goToFirstList');

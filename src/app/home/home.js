@@ -12,7 +12,7 @@ angular.module('shopper.home', [
     }
   });
 })
-.controller('HomeCtrl', function($scope, $rootScope, $window, HomeService) {
+.controller('HomeCtrl', function($scope, $rootScope, $timeout, HomeService) {
   $scope.$on('updateAllProducts', function(scope, data) {
     $scope.allProducts = data;
   });
@@ -22,7 +22,9 @@ angular.module('shopper.home', [
   });
   
   $scope.$on('goToFirstList', function(scope) {
-    $scope.currentListIndex = 0;
+    if ($scope.currentListIndex > 0) {
+      $scope.currentListIndex--;
+    }
   });
   
   $scope.refresh = function() {
@@ -73,9 +75,13 @@ angular.module('shopper.home', [
   };
   
   $scope.addList = function() {
-    var name = $window.prompt('What should we call it?');
+    var name = prompt('What should we call it?');
     HomeService.addList(name).success(function(data) {
-      HomeService.getListsWithProductsOfUser();
+      HomeService.getListsWithProductsOfUser().success(function() {
+        $timeout(function() {
+          $scope.currentListIndex = $scope.lists.length - 1;
+        }, 500);
+      });
     });
   };
   
@@ -113,7 +119,9 @@ angular.module('shopper.home', [
     params.cmd = 'add_product_to_list';
     params.product_id = product.id;
     params.list_id = list.id;
-    $http.get(Api.url, { params: params });
+    $http.get(Api.url, { params: params }).then(function() {
+      // Do nothing
+    });
   };
   
   this.addCustomProductToList = function(name, list) {

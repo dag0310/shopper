@@ -13,12 +13,16 @@ angular.module('shopper.home', [
   });
 })
 .controller('HomeCtrl', function($scope, $rootScope, $location, HomeService) {
-  $scope.$on('updateAllProducts', function(evt, data) {
+  $scope.$on('updateAllProducts', function(scope, data) {
     $scope.allProducts = data;
   });
   
-  $scope.$on('updateLists', function(evt, data) {
+  $scope.$on('updateLists', function(scope, data) {
     $scope.lists = data;
+  });
+  
+  $scope.$on('goToFirstList', function(scope) {
+    $scope.currentListIndex = 0;
   });
   
   $scope.refresh = function() {
@@ -99,7 +103,7 @@ angular.module('shopper.home', [
     params.cmd = 'get_lists_with_products_of_user';
     params.user_id = Session.user.id;
     
-    $http.get(Api.url, { params: params }).success(function(data) {
+    return $http.get(Api.url, { params: params }).success(function(data) {
       $rootScope.$broadcast('updateLists', data);
     });
   };

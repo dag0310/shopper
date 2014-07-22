@@ -1,5 +1,5 @@
 angular.module('shopper.list', [])
-.controller('ListCtrl', function($scope, ListService, HomeService, Session) {
+.controller('ListCtrl', function($scope, $rootScope, ListService, HomeService, Session) {
   $scope.$on('showListDetail', function(scope, list) {
     $scope.showMe = ! $scope.showMe;
     if ($scope.showMe) {
@@ -48,10 +48,21 @@ angular.module('shopper.list', [])
     }
   };
   
+  $scope.unsubscribe = function() {
+    if (confirm('Are you sure you want to unsubscribe from this list?!')) {
+      ListService.unsubscribeUserFromList(Session.user, $scope.list).success(function() {
+        HomeService.getListsWithProductsOfUser().success(function() {
+          $rootScope.$broadcast('goToFirstList');
+        });
+      });
+      $scope.cancel();
+    }
+  };
+  
   $scope.showMe = false;
   $scope.list = null;
 })
-.service('ListService', function($http, $rootScope, Api, Session) {
+.service('ListService', function($http, Api) {
   this.updateList = function(list_id, name) {
     var params = Api.getParams();
     params.cmd = 'update_list';
@@ -70,6 +81,14 @@ angular.module('shopper.list', [])
   this.addUserToList = function(user, list) {
     var params = Api.getParams();
     params.cmd = 'add_user_to_list';
+    params.user_id = user.id;
+    params.list_id = list.id;
+    return $http.get(Api.url, { params: params });
+  };
+  
+  this.unsubscribeUserFromList = function(user, list) {
+    var params = Api.getParams();
+    params.cmd = 'unsubscribe_user_from_list';
     params.user_id = user.id;
     params.list_id = list.id;
     return $http.get(Api.url, { params: params });

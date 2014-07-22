@@ -13,35 +13,35 @@
 </nav>
 
 <div id="outer">
-<!--Filtered products-->
-<div class="product-list" ng-show="productSearchQuery">
-  <button class="product" ng-click="addCustomProductToList()">{{productSearchQuery}}</button>
-  <button class="product" ng-repeat="product in allProducts | filter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)" ng-hide="isProductInList(product)">
-    {{product.name}}
-  </button>
-</div>
+  <!--Filtered products-->
+  <div class="product-list" ng-show="productSearchQuery">
+    <button class="product" ng-click="addCustomProductToList()">{{productSearchQuery}}</button>
+    <button class="product" ng-repeat="product in allProducts | filter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" ng-click="addProductToList(product)" ng-hide="isProductInList(product)">
+      {{product.name}}
+    </button>
+  </div>
 
-<!--Carousel of lists-->
-<div class="my-list">
-  <!--List Detail-->
-  <div ng-include src="'assets/list.tpl.html'"></div>
-  
-  <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
-    <li ng-repeat="list in lists">
-      <!--Name of current list-->
-      <h3 ng-click="editList($index)" style="display:inline">{{list.name || 'Untitled'}}</h3>
-      <ul class="users-of-list">
-        <li ng-repeat="user in list.users">{{user.name.split(' ')[0]}}</li>
-      </ul>
-      
-      <!--Shopping list-->
-      <div class="product-list selected" ng-hide="list.products.length === 0">
-        <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
-          {{product.name}}
-        </button>
-      </div>
-      <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
-    </li>
-  </ul>
-</div>
+  <!--Carousel of lists-->
+  <div class="my-list">
+    <!--List Detail-->
+    <div ng-include src="'assets/list.tpl.html'"></div>
+
+    <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
+      <li ng-repeat="list in lists">
+        <!--Name of current list-->
+        <h3 ng-click="editList($index)" style="display:inline">{{list.name || 'Untitled'}}</h3>
+        <ul class="users-of-list">
+          <li ng-repeat="user in list.users">{{user.name.split(' ')[0]}}</li>
+        </ul>
+
+        <!--Shopping list-->
+        <div class="product-list selected" ng-hide="list.products.length === 0">
+          <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">
+            {{product.name}}
+          </button>
+        </div>
+        <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
+      </li>
+    </ul>
+  </div>
 </div>

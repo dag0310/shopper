@@ -62,8 +62,9 @@ angular.module('shopper.home', [
       return;
     }
     
-    HomeService.addProductToList(product, currentList);
-    currentList.products.push(product);
+    HomeService.addProductToList(product, currentList).then(function() {
+      currentList.products.push(product);
+    });
     
     $scope.productSearchQuery = '';
   };
@@ -119,9 +120,7 @@ angular.module('shopper.home', [
     params.cmd = 'add_product_to_list';
     params.product_id = product.id;
     params.list_id = list.id;
-    $http.get(Api.url, { params: params }).then(function() {
-      // Do nothing
-    });
+    return $http.get(Api.url, { params: params });
   };
   
   this.addCustomProductToList = function(name, list) {

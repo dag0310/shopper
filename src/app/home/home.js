@@ -77,13 +77,15 @@ angular.module('shopper.home', [
   
   $scope.addList = function() {
     var name = prompt('What should we call it?');
-    HomeService.addList(name).success(function(data) {
-      HomeService.getListsWithProductsOfUser().success(function() {
-        $timeout(function() {
-          $scope.currentListIndex = $scope.lists.length - 1;
-        }, 500);
+    if (name) {
+      HomeService.addList(name).success(function(data) {
+        HomeService.getListsWithProductsOfUser().success(function() {
+          $timeout(function() {
+            $scope.currentListIndex = $scope.lists.length - 1;
+          }, 500);
+        });
       });
-    });
+    }
   };
   
   $scope.editList = function(index) {

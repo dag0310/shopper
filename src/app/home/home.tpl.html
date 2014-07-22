@@ -50,7 +50,7 @@
     <li ng-repeat="list in lists">
       <!--Name of current list-->
       <h3 ng-click="editList($index)">{{list.name}}</h3>
-
+      
       <!--Shopping list-->
       <div class="product-list selected" ng-hide="list.products.length === 0">
         <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" ng-click="removeProductFromList(product)">

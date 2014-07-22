@@ -6,6 +6,7 @@ angular.module('shopper', [
   'templates-app',
   'templates-common',
   'ui.router',
+  'ui.bootstrap',
   'shopper.auth',
   'shopper.home',
   'shopper.list'

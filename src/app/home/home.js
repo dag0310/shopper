@@ -12,7 +12,7 @@ angular.module('shopper.home', [
     }
   });
 })
-.controller('HomeCtrl', function($scope, $rootScope, $location, HomeService) {
+.controller('HomeCtrl', function($scope, $rootScope, $window, HomeService) {
   $scope.$on('updateAllProducts', function(scope, data) {
     $scope.allProducts = data;
   });
@@ -73,7 +73,7 @@ angular.module('shopper.home', [
   };
   
   $scope.addList = function() {
-    var name = prompt('What should we call it?');
+    var name = $window.prompt('What should we call it?');
     HomeService.addList(name).success(function(data) {
       HomeService.getListsWithProductsOfUser();
     });
@@ -113,7 +113,7 @@ angular.module('shopper.home', [
     params.cmd = 'add_product_to_list';
     params.product_id = product.id;
     params.list_id = list.id;
-    return $http.get(Api.url, { params: params });
+    $http.get(Api.url, { params: params });
   };
   
   this.addCustomProductToList = function(name, list) {

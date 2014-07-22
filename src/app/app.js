@@ -28,7 +28,9 @@ angular.module('shopper', [
   });
   
   $scope.logout = function() {
-    Session.logout();
+    if (confirm('Sure you want to log out?')) {
+      Session.logout();
+    }
   };
   
   if (typeof localStorage.user !== 'undefined') {

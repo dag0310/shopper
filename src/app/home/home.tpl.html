@@ -43,10 +43,13 @@
 
 <!--Carousel of lists-->
 <div class="my-list">
+  <!--List Detail-->
+  <div ng-include src="'assets/list.tpl.html'"></div>
+  
   <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
     <li ng-repeat="list in lists">
       <!--Name of current list-->
-      <h3>{{list.name}}</h3>
+      <h3 ng-click="editList($index)">{{list.name}}</h3>
 
       <!--Shopping list-->
       <div class="product-list selected" ng-hide="list.products.length === 0">

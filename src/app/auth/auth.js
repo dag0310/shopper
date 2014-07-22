@@ -14,7 +14,7 @@ angular.module('shopper.auth', [
 })
 .controller('AuthCtrl', function($scope, $location, AuthService, Session) {
   if (Session.isLoggedIn()) {
-    $location.path('/home');
+    $location.path('/home/');
   }
   
   var loginStr = 'Login', registerStr = 'Register';
@@ -46,7 +46,7 @@ angular.module('shopper.auth', [
                 localStorage.user = JSON.stringify(user);
               }
               Session.login(user);
-              $location.path('/home');
+              $location.path('/home/');
             });
           } else {
             $scope.passwordInvalid = true;

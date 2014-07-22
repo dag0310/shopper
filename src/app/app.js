@@ -6,8 +6,9 @@ angular.module('shopper', [
   'templates-app',
   'templates-common',
   'ui.router',
+  'shopper.auth',
   'shopper.home',
-  'shopper.auth'
+  'shopper.list'
 ])
 .config(function myAppConfig($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/home');
@@ -19,11 +20,6 @@ angular.module('shopper', [
   
 })
 .controller('AppCtrl', function($scope, $location, Session) {
-  if (typeof localStorage.user !== 'undefined') {
-    Session.login(JSON.parse(localStorage.user));
-    $location.path('/home');
-  }
-  
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     if (! Session.isLoggedIn()) {
       $location.path('/auth');
@@ -32,10 +28,14 @@ angular.module('shopper', [
   
   $scope.logout = function() {
     Session.logout();
-    $location.path('/auth');
   };
+  
+  if (typeof localStorage.user !== 'undefined') {
+    Session.login(JSON.parse(localStorage.user));
+    $location.path('/home');
+  }
 })
-.service('Session', function() {
+.service('Session', function($location) {
   var self = this;
   this.user = undefined;
   
@@ -46,6 +46,7 @@ angular.module('shopper', [
   this.logout = function() {
     self.user = undefined;
     localStorage.removeItem('user');
+    $location.path('/auth');
   };
   
   this.isLoggedIn = function() {

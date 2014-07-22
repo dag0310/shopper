@@ -1,0 +1,12 @@
+<div ng-controller="ListCtrl" ng-show="showMe">
+  <!--List name-->
+  <form ng-submit="updateList()">
+    <input type="text" ng-model="list.name" class="form-control">
+    <button type="submit" class="btn btn-primary">Update list name</button>
+  </form>
+
+  <!--Users-->
+  <div ng-repeat="user in list.users | orderBy:name">
+    {{user.name}} ({{user.email}})
+  </div>
+</div>

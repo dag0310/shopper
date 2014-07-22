@@ -12,7 +12,7 @@ angular.module('shopper.home', [
     }
   });
 })
-.controller('HomeCtrl', function($scope, $rootScope, HomeService) {
+.controller('HomeCtrl', function($scope, $rootScope, $location, HomeService) {
   $scope.$on('updateAllProducts', function(evt, data) {
     $scope.allProducts = data;
   });
@@ -75,9 +75,12 @@ angular.module('shopper.home', [
     });
   };
   
+  $scope.editList = function(index) {
+    $rootScope.$broadcast('showListDetail', $scope.lists[index]);
+  };
+  
   $scope.lists = [];
   $scope.currentListIndex = 0;
-  
   $scope.refresh();
 })
 .service('HomeService', function($http, $rootScope, Api, Session) {

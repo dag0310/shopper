@@ -82,7 +82,7 @@ angular.module('shopper.home', [
         HomeService.getListsWithProductsOfUser().success(function() {
           $timeout(function() {
             $scope.currentListIndex = $scope.lists.length - 1;
-          }, 500);
+          });
         });
       });
     }

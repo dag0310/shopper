@@ -26,10 +26,29 @@ angular.module('shopper.home', [
       $scope.currentListIndex--;
     }
   });
+    
+  $scope.$watch('currentListIndex', function(newValue) {
+    if ($scope.lists[newValue]) {
+      localStorage.lastListId = $scope.lists[newValue].id;
+    }
+  });
   
-  $scope.refresh = function() {
+  $scope.refresh = function(initialLoad) {
     HomeService.getAllProducts();
-    HomeService.getListsWithProductsOfUser();
+    HomeService.getListsWithProductsOfUser().then(function() {
+        if (initialLoad) {
+          $timeout(function() {
+            if (localStorage.lastListId) {
+                for (var i = 0; i < $scope.lists.length; i++) {
+                    if ($scope.lists[i].id.toString() === localStorage.lastListId) {
+                        $scope.currentListIndex = i;
+                        break;
+                    }
+                }
+            }
+          });
+        }
+    });
   };
   
   $scope.addCustomProductToList = function() {
@@ -113,7 +132,7 @@ angular.module('shopper.home', [
   
   $scope.lists = [];
   $scope.currentListIndex = 0;
-  $scope.refresh();
+  $scope.refresh(true);
 })
 .service('HomeService', function($http, $rootScope, Api, Session) {
   this.getAllProducts = function() {

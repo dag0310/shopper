@@ -41,6 +41,9 @@
           </button>
         </div>
         <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
+        
+        <button class="btn btn-default" ng-click="moveListOnePosition(-1)">&lt;--</button>
+        <button class="btn btn-default" ng-click="moveListOnePosition(1)">--&gt;</button>
       </li>
     </ul>
   </div>

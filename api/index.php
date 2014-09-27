@@ -164,7 +164,7 @@ class ShopperAPI {
     }
     function get_lists_of_user($user_id = NULL) {
         extract($this->get_params(array('user_id')));
-        $sql = "SELECT * FROM list_of_user WHERE user_id = '$user_id'";
+        $sql = "SELECT * FROM list_of_user WHERE user_id = '$user_id' ORDER BY position ASC";
         return $this->fetch_all($sql);
     }
     function get_lists_with_products_of_user($user_id = NULL) {
@@ -173,7 +173,8 @@ class ShopperAPI {
             . "SELECT l.* "
             . "FROM list_of_user lof "
             . "INNER JOIN list l ON (lof.list_id = l.id) "
-            . "WHERE user_id = '$user_id'";
+            . "WHERE user_id = '$user_id' "
+            . "ORDER BY lof.position ASC";
         $lists = $this->fetch_all($sql);
 
         foreach ($lists as $key => $list) {
@@ -185,7 +186,11 @@ class ShopperAPI {
     }
     function add_user_to_list($user_id = NULL, $list_id = NULL) {
         extract($this->get_params(array('user_id', 'list_id')));
-        $sql = "INSERT INTO list_of_user ('list_id', 'user_id') VALUES ('$list_id', '$user_id')";
+        
+        $sql = "SELECT MAX(position) FROM list_of_user WHERE user_id = $user_id";
+        $position = ((int) $this->fetch_value($sql)) + 1;
+        
+        $sql = "INSERT INTO list_of_user ('list_id', 'user_id', 'position') VALUES ('$list_id', '$user_id', '$position')";
         $bool = $this->db->exec($sql);
         return $bool;
     }
@@ -212,6 +217,17 @@ class ShopperAPI {
         extract($this->get_params(array('product_id', 'list_id')));
         $sql = "DELETE FROM product_on_list WHERE list_id = '$list_id' AND product_id = '$product_id'";
         return $this->db->exec($sql);
+    }
+    function move_list_one_position($list_id, $direction, $user_id) {
+        extract($this->get_params(array('list_id', 'direction', 'user_id')));
+        $sql = "SELECT position FROM list_of_user WHERE list_id = '$list_id' AND user_id = '$user_id'";
+        $position = (int) $this->fetch_value($sql);
+        $new_position = $position + ((int) $direction);
+        
+        $sql = "UPDATE list_of_user SET position = '$position' WHERE position = '$new_position' AND user_id = '$user_id'";
+        $this->db->exec($sql);
+        $sql = "UPDATE list_of_user SET position = '$new_position' WHERE list_id = '$list_id' AND user_id = '$user_id'";
+        $this->db->exec($sql);
     }
 
     // PRODUCT
@@ -302,6 +318,10 @@ class ShopperAPI {
     }
     function fetch_value($sql) {
         return $this->db->querySingle($sql, FALSE);
+    }
+    
+    function log($string) {
+        file_put_contents('debug.log', "$string\n", FILE_APPEND);
     }
 }
 

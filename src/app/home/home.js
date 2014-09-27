@@ -43,13 +43,12 @@ angular.module('shopper.home', [
   };
   
   $scope.isProductInList = function(product) {
-    var currentList = $scope.lists[$scope.currentListIndex];
-    if (currentList === undefined) {
+    if (getCurrentList() === undefined) {
       return false;
     }
     
-    for (var i = 0; i < currentList.products.length; i++) {
-      if (product.id === currentList.products[i].id) {
+    for (var i = 0; i < getCurrentList().products.length; i++) {
+      if (product.id === getCurrentList().products[i].id) {
         return true;
       }
     }
@@ -57,22 +56,20 @@ angular.module('shopper.home', [
   };
   
   $scope.addProductToList = function(product) {
-    var currentList = $scope.lists[$scope.currentListIndex];
     if ($scope.isProductInList(product)) {
       return;
     }
     
-    HomeService.addProductToList(product, currentList).then(function() {
-      currentList.products.push(product);
+    HomeService.addProductToList(product, getCurrentList()).then(function() {
+      getCurrentList().products.push(product);
     });
     
     $scope.productSearchQuery = '';
   };
   
   $scope.removeProductFromList = function(product) {
-    var currentList = $scope.lists[$scope.currentListIndex];
-    HomeService.removeProductFromList(product, currentList);
-    currentList.products.splice(currentList.products.indexOf(product), 1);
+    HomeService.removeProductFromList(product, getCurrentList());
+    getCurrentList().products.splice(getCurrentList().products.indexOf(product), 1);
   };
   
   $scope.addList = function() {
@@ -91,6 +88,28 @@ angular.module('shopper.home', [
   $scope.editList = function(index) {
     $rootScope.$broadcast('showListDetail', $scope.lists[index]);
   };
+  
+  $scope.moveListOnePosition = function(direction) {
+      var currentListIndex = $scope.currentListIndex;
+      var otherListIndex = $scope.currentListIndex + direction;
+      
+      if (otherListIndex < 0 || otherListIndex > $scope.lists.length - 1) {
+          return;
+      }
+      
+      $timeout(function() {
+        $scope.currentListIndex = otherListIndex;
+      });
+      var otherList = $scope.lists[otherListIndex];
+      $scope.lists[otherListIndex] = $scope.lists[currentListIndex];
+      $scope.lists[currentListIndex] = otherList;
+      
+      HomeService.moveListOnePosition($scope.lists[otherListIndex].id, direction);
+  };
+  
+  function getCurrentList() {
+      return $scope.lists[$scope.currentListIndex];
+  }
   
   $scope.lists = [];
   $scope.currentListIndex = 0;
@@ -148,6 +167,15 @@ angular.module('shopper.home', [
     params.name = name;
     params.user_id = Session.user.id;
     return $http.get(Api.url, { params: params });
+  };
+  
+  this.moveListOnePosition = function(list_id, direction) {
+      var params = Api.getParams();
+      params.cmd = 'move_list_one_position';
+      params.list_id = list_id;
+      params.direction = direction;
+      params.user_id = Session.user.id;
+      return $http.get(Api.url, { params: params });
   };
 })
 ;

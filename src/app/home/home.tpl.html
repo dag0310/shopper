@@ -5,7 +5,7 @@
         <button myclick="logout()" class="btn btn-default">Logout<!--<span class="glyphicon glyphicon-off"></span>--></button>
     </form>
     <br>
-    <form role="search" ng-submit="addCustomProductToList()">
+    <form role="search" ng-submit="addCustomProductToList(productSearchQuery)">
         <div class="form-group">
             <input ng-model="productSearchQuery" class="form-control" placeholder="Search...">
         </div>
@@ -15,7 +15,7 @@
 <div id="outer">
     <!--Filtered products-->
     <div class="product-list" ng-show="productSearchQuery">
-        <button class="product" myclick="addCustomProductToList()">{{productSearchQuery}}</button>
+        <button class="product" myclick="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
         <button class="product" ng-repeat="product in allProducts | filter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" myclick="addProductToList(product)" ng-hide="isProductInList(product)">
             {{product.name}}
         </button>

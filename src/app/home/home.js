@@ -51,10 +51,8 @@ angular.module('shopper.home', [
         });
     };
 
-    $scope.addCustomProductToList = function() {
-        var name = $scope.productSearchQuery;
-
-        HomeService.addCustomProductToList(name, $scope.lists[$scope.currentListIndex]).success(function(data) {
+    $scope.addCustomProductToList = function(name) {
+        HomeService.addCustomProductToList($scope.capitalizeString(name), $scope.lists[$scope.currentListIndex]).success(function(data) {
             $scope.refresh();
         });
 
@@ -124,6 +122,13 @@ angular.module('shopper.home', [
         $scope.lists[currentListIndex] = otherList;
 
         HomeService.moveListOnePosition($scope.lists[otherListIndex].id, direction);
+    };
+    
+    $scope.capitalizeString = function(str) {
+        if (typeof str === 'string') {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        return '';
     };
 
     function getCurrentList() {

@@ -258,7 +258,7 @@ class ShopperAPI {
     }
     function get_all_products_created_by_user($user_id = NULL) {
         extract($this->get_params(array('user_id')));
-        $sql = "SELECT * FROM product WHERE created_by = '$user_id";
+        $sql = "SELECT * FROM product WHERE created_by = '$user_id'";
         return $this->fetch_all($sql);
     }
     function add_custom_product_to_list($name = NULL, $list_id = NULL, $user_id = NULL) {

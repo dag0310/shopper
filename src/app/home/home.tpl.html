@@ -25,26 +25,28 @@
     <div class="my-list">
         <!--List Detail-->
         <div ng-include src="'list/list.tpl.html'"></div>
+        
+        <div ng-show="showMe">
+            <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
+                <li ng-repeat="list in lists">
+                    <!--Name of current list-->
+                    <h3 myclick="editList($index)" style="display:inline">{{list.name || 'Untitled'}}</h3>
+                    <ul class="users-of-list">
+                        <li ng-repeat="user in list.users">{{user.name.split(' ')[0]}}</li>
+                    </ul>
 
-        <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
-            <li ng-repeat="list in lists">
-                <!--Name of current list-->
-                <h3 myclick="editList($index)" style="display:inline">{{list.name || 'Untitled'}}</h3>
-                <ul class="users-of-list">
-                    <li ng-repeat="user in list.users">{{user.name.split(' ')[0]}}</li>
-                </ul>
+                    <!--Shopping list-->
+                    <div class="product-list selected" ng-hide="list.products.length === 0">
+                        <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" myclick="removeProductFromList(product)">
+                            {{product.name}}
+                        </button>
+                    </div>
+                    <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
 
-                <!--Shopping list-->
-                <div class="product-list selected" ng-hide="list.products.length === 0">
-                    <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" myclick="removeProductFromList(product)">
-                        {{product.name}}
-                    </button>
-                </div>
-                <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
-
-                <button class="btn btn-default" ng-click="moveListOnePosition(-1)">&lt;--</button>
-                <button class="btn btn-default" ng-click="moveListOnePosition(1)">--&gt;</button>
-            </li>
-        </ul>
+                    <button class="btn btn-default" ng-click="moveListOnePosition(-1)">&lt;--</button>
+                    <button class="btn btn-default" ng-click="moveListOnePosition(1)">--&gt;</button>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

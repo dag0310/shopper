@@ -30,6 +30,10 @@ angular.module('shopper.home', [
             $scope.currentListIndex--;
         }
     });
+    
+    $scope.$on('hideListDetail', function(scope) {
+        $scope.showMe = true;
+    });
 
     $scope.$watch('currentListIndex', function(newValue) {
         if ($scope.lists[newValue]) {
@@ -107,6 +111,7 @@ angular.module('shopper.home', [
     };
 
     $scope.editList = function(index) {
+        $scope.showMe = false;
         $rootScope.$broadcast('showListDetail', $scope.lists[index]);
     };
 
@@ -139,6 +144,7 @@ angular.module('shopper.home', [
         return $scope.lists[$scope.currentListIndex];
     }
 
+    $scope.showMe = true;
     $scope.lists = [];
     $scope.currentListIndex = 0;
     $scope.refresh(true);

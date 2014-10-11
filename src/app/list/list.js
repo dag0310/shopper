@@ -11,6 +11,7 @@ angular.module('shopper.list', [])
         $scope.showMe = false;
         $scope.userSelected = undefined;
         $scope.list = null;
+        $rootScope.$broadcast('hideListDetail');
     };
 
     $scope.updateList = function() {

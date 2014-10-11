@@ -13,6 +13,10 @@ angular.module('shopper.home', [
     });
 })
 .controller('HomeCtrl', function($scope, $rootScope, $timeout, HomeService) {
+    $scope.$on('bodyClicked', function(scope) {
+        $scope.productSearchQuery = '';
+    });
+    
     $scope.$on('updateAllProducts', function(scope, data) {
         $scope.allProducts = data;
     });

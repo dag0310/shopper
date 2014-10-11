@@ -32,6 +32,10 @@ angular.module('shopper', [
             Session.logout();
         }
     };
+    
+    $scope.bodyClicked = function() {
+        $scope.$broadcast('bodyClicked');
+    };
 
     if (typeof localStorage.user !== 'undefined') {
         Session.login(JSON.parse(localStorage.user));

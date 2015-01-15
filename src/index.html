@@ -11,8 +11,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="assets/angular-carousel.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/addtohomescreen.css">
     
     <link rel="icon" href="assets/favicon.png?v=1" type="image/png">
     <link rel="apple-touch-icon-precomposed" href="assets/favicon.png">
@@ -25,11 +23,11 @@
 
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
-    <script>
-      addToHomescreen();
-    </script>
   </head>
   <body hm-tap="bodyClicked()">
     <div id="screen" ui-view="main"></div>
+    <script>
+      addToHomescreen();
+    </script>
   </body>
 </html>

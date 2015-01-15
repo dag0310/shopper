@@ -4,7 +4,7 @@
 build/
 bin/
 node_modules/
-nbproject/private
+nbproject
 shopper
 api
 ^api/index.php

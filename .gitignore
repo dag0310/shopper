@@ -9,3 +9,4 @@ shopper
 api
 ^api/index.php
 ^api/data
+.project

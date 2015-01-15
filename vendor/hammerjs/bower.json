@@ -1,14 +1,12 @@
 {
     "name": "hammerjs",
-    "version": "2.0.0",
+    "version": "1.0.11",
     "main": "hammer.js",
     "ignore": [
         "tests",
-        "Gruntfile.coffee",
         "component.json",
         "package.json",
-        "docs",
-        "misc",
+        "examples",
         "src"
     ]
 }

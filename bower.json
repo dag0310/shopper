@@ -18,7 +18,7 @@
   "authors": [
     "Daniel Geymayer <daniel.geymayer@edu.fh-joanneum.at>"
   ],
-  "description": "The simple, shareable shopping list",
+  "description": "The simple shareable shopping list",
   "main": "index.html",
   "license": "AGPL",
   "private": true,

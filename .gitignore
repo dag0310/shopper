@@ -1,13 +1,11 @@
 .DS_Store
 *.sw*
 *~
-build/
-bin/
-node_modules/
+build
+bin
+node_modules
 nbproject
 shopper
-api
-^api/index.php
-^api/data
+api/*.db
 .project
 .htaccess

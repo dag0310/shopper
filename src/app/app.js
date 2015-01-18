@@ -74,15 +74,4 @@ angular.module('shopper', [
         return params;
     };
 })
-.directive('myTap', function($timeout) {
-    return function(scope, element, attrs) {
-        element.bind('touchend click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            $timeout(function() {
-                scope.$apply(attrs['myTap']);
-            });
-        });
-    };
-})
 ;

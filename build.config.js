@@ -74,6 +74,7 @@ module.exports = {
     css: [
       'vendor/angular-carousel/dist/angular-carousel.min.css',
       'vendor/add-to-homescreen/style/addtohomescreen.css',
+      'vendor/font-awesome/css/font-awesome.min.css',
     ],
     assets: [
     ]

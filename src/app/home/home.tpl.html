@@ -42,11 +42,12 @@
                         </button>
                     </div>
                     <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
-
-                    <button class="btn btn-default" hm-tap="moveListOnePosition(-1)">&lt;--</button>
-                    <button class="btn btn-default" hm-tap="moveListOnePosition(1)">--&gt;</button>
                 </li>
             </ul>
+            <div class="text-center shift-list-block">
+                <button class="btn btn-default" hm-tap="moveListOnePosition(-1)"><i class="fa fa-angle-double-left"></i> Shift left</button>
+                <button class="btn btn-default" hm-tap="moveListOnePosition(1)">Shift right <i class="fa fa-angle-double-right"></i></button>
+            </div>
         </div>
     </div>
 </div>

@@ -74,4 +74,13 @@ angular.module('shopper', [
         return params;
     };
 })
+.directive('myTap', function() {
+    return function(scope, element, attrs) {
+        element.bind('touchstart click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            scope.$apply(attrs['myTap']);
+        });
+    };
+})
 ;

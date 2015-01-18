@@ -1,7 +1,7 @@
 angular.module('shopper', [
     'ngTouch',
     'ngAnimate',
-    'hmTouchEvents',
+    'angular-gestures',
     'angular-carousel',
     'templates-app',
     'templates-common',

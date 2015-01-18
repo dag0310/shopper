@@ -66,7 +66,7 @@ module.exports = {
       'vendor/angular-touch/angular-touch.min.js',
       'vendor/angular-animate/angular-animate.min.js',
       'vendor/angular-ui-router/release/angular-ui-router.min.js',
-      'vendor/angular-hammer/angular-hammer.js',
+      'vendor/angular-gestures/gestures.min.js',
       'vendor/angular-mocks/angular-mocks.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
       'vendor/angular-carousel/dist/angular-carousel.min.js'

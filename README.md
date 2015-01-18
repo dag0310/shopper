@@ -1,29 +1,25 @@
-Shopper
-=======
+# Shopper
 The simple shareable shopping list
 
-Prerequisites
--------------
-- Git of course
-- Local web server with PHP installed (XAMPP, LAMP, ...)
-- Node.js
-- Node modules
-  - npm install -g grunt
-  - npm install -g grunt-cli
-  - npm install -g bower
+## Developer corner
 
-Installation
-------------
+### Prerequisites
+- Local web server with PHP installed (e.g. [XAMPP](https://www.apachefriends.org))
+- [Node.js](http://nodejs.org/)
+- Node.js modules
+  - `npm install -g grunt`
+  - `npm install -g grunt-cli`
+  - `npm install -g bower`
+
+### Installation
+Execute command line statements from within the repository's root directory!
+
 - Check out git repo
-- Point web server to build directory
+- Point web server to build directory (e.g. http://localhost/shopper/build)
 - Setup database by copying an empty template of it from "COPY_TO_API" folder to "api" folder
-- Install Node.js with package manager npm
-- Install dependencies (in repo root directory)
-  - npm install
-- Run (also in repo root directory)
-  - grunt watch
-- Open website in browser at web server location (e.g. http://localhost/shopper/build)
+- `npm install` installs local node modules in folder "node_modules"
+- `grunt watch` continuously tests and builds the app after every file change
+- Open app in browser at web server location 
 
-License
--------
+## License
 GNU AFFERO GENERAL PUBLIC LICENSE

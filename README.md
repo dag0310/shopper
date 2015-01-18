@@ -20,7 +20,6 @@ Installation
 - Install Node.js with package manager npm
 - Install dependencies (in repo root directory)
   - npm install
-  - bower update
 - Run (also in repo root directory)
   - grunt watch
 - Open website in browser at web server location (e.g. http://localhost/shopper/build)

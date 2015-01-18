@@ -76,7 +76,7 @@ angular.module('shopper', [
 })
 .directive('myTap', function($timeout) {
     return function(scope, element, attrs) {
-        element.bind('touchstart click', function(event) {
+        element.bind('touchend click', function(event) {
             event.preventDefault();
             event.stopPropagation();
             $timeout(function() {

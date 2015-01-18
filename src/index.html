@@ -23,7 +23,7 @@
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
   </head>
-  <body my-tap="bodyClicked()">
+  <body hm-tap="bodyClicked()">
     <div id="screen" ui-view="main"></div>
     <script>
       addToHomescreen();

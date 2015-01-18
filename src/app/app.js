@@ -74,12 +74,14 @@ angular.module('shopper', [
         return params;
     };
 })
-.directive('myTap', function() {
+.directive('myTap', function($timeout) {
     return function(scope, element, attrs) {
         element.bind('touchstart click', function(event) {
             event.preventDefault();
             event.stopPropagation();
-            scope.$apply(attrs['myTap']);
+            $timeout(function() {
+                scope.$apply(attrs['myTap']);
+            });
         });
     };
 })

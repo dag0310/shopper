@@ -1,24 +1,19 @@
 {
   "name": "hammerjs",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "main": "hammer.js",
   "ignore": [
     "tests",
-    "Gruntfile.coffee",
-    "component.json",
-    "package.json",
-    "docs",
-    "misc",
     "src"
   ],
   "homepage": "https://github.com/EightMedia/hammer.js",
-  "_release": "2.0.1",
+  "_release": "2.0.4",
   "_resolution": {
     "type": "version",
-    "tag": "2.0.1",
-    "commit": "835e44c2e8dd2159142952b2dde21a717185bc34"
+    "tag": "2.0.4",
+    "commit": "7fc11efb37d6f2334ce957e26e9cf53690e10fa5"
   },
   "_source": "git://github.com/EightMedia/hammer.js.git",
-  "_target": "2.0.1",
+  "_target": "~2.0.1",
   "_originalSource": "hammerjs"
 }

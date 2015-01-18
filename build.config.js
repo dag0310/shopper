@@ -59,6 +59,7 @@ module.exports = {
    */
   vendor_files: {
     js: [
+      'vendor/md5/build/md5.min.js',
       'vendor/jquery/dist/jquery.min.js',
       'vendor/add-to-homescreen/src/addtohomescreen.min.js',
       'vendor/hammerjs/hammer.min.js',

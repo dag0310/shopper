@@ -3,19 +3,27 @@ angular.module('shopper', [
     'ngAnimate',
     'angular-gestures',
     'angular-carousel',
-    'templates-app',
-    'templates-common',
+    'pascalprecht.translate',
     'ui.router',
     'ui.bootstrap',
+    'templates-app',
     'shopper.auth',
     'shopper.home',
     'shopper.list'
 ])
-.config(function myAppConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(function myAppConfig($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider) {
     $urlRouterProvider.otherwise('/home');
 
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    
+    /*for (var i = 0; i < TranslationProvider.language.length; i++) {
+        var language = TranslationProvider.languages[i];
+        $translateProvider.translations(language, TranslationProvider.translations[language]);
+    }
+    var deviceLanguage = GlobalAppLocale.substr(0, 2);
+    var preferredLanguage = (Object.keys(TranslationProvider.translations).indexOf(deviceLanguage) !== -1) ? deviceLanguage : 'en';
+    $translateProvider.preferredLanguage(preferredLanguage);*/
 })
 .run(function run () {
 
@@ -73,5 +81,56 @@ angular.module('shopper', [
         }
         return params;
     };
+})
+.provider('Translation', function() {
+    var i;
+    
+    this.translations = {};
+
+    this.languages = ['en', 'de'];
+    
+    // Initialize translations
+    for (i = 0; i < this.languages.length; i++) {
+        this.translations[this.languages[i]] = {};
+    }
+
+    var translations = Object.freeze({
+        YES: [
+            'Yes',
+            'Ja'],
+        NO: [
+            'No',
+            'Nein'],
+        OK: [
+            'OK',
+            'OK'],
+        SAVE: [
+            'Save',
+            'Speichern'],
+        CANCEL: [
+            'Cancel',
+            'Abbrechen'],
+        BACK: [
+            'Back',
+            'Zurück'],
+        SETTINGS: [
+            'Settings',
+            'Einstellungen'],
+        ON: [
+            'on',
+            'ein'],
+        OFF: [
+            'off',
+            'aus']
+    });
+
+    // Generate translation objects
+    for (var key in translations) {
+        for (i = 0; i < this.languages.length; i++) {
+            this.translations[this.languages[i]][key] = translations[key][i];
+        }
+    }
+    
+    this.$get = []; // $get required by provider
 })
 ;

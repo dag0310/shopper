@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="shopper" ng-controller="AppCtrl" lang="en" data-framework="angularjs">
   <head>
-    <title><%= name %></title>
-    
+    <title>Shopper</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -11,14 +10,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     
-    <link rel="icon" href="assets/favicon.png?v=1" type="image/png">
-    <link rel="apple-touch-icon-precomposed" href="assets/favicon.png">
+    <link rel="icon" href="images/favicon.png?v=1" type="image/png">
+    <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
     
-    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
-    <link rel="stylesheet" type="text/css" href="<%= file %>"><% }); %>
-
-    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
-    <script type="text/javascript" src="<%= file %>"></script><% }); %>
+    <!-- inject:css -->
+    <!-- endinject -->
+    
+    <!-- inject:js -->
+    <!-- endinject -->
   </head>
   <body hm-tap="bodyClicked()">
     <div id="screen" ui-view="main"></div>

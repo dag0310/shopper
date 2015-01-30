@@ -1,19 +1,19 @@
 <div ng-controller="ListCtrl" ng-show="showMe">
     <form ng-submit="updateList()">
         <input type="text" ng-model="list.name" class="form-control" style="width:50%;display:inline-block">
-        <button type="submit" class="btn btn-info pull-right" style="width:48%;display:inline-block">Update list name</button>
+        <button type="submit" class="btn btn-info pull-right" style="width:48%;display:inline-block">{{'CHANGE_LIST_NAME' | translate}}</button>
         <div class="clearfix"></div>
     </form>
 
     <br>
 
     <form class="form-inline" ng-submit="addUserToList()">
-        <input type="text" ng-model="userSelected" style="width:80%;display:inline-block" placeholder="Add somebody to the list" typeahead="user as (user.name + ' (' + user.email + ')') for user in searchUsers($viewValue)" class="form-control">
-        <button type="submit" class="btn btn-default btn-info pull-right" style="width:18%;display:inline-block">Add</button>
+        <input type="text" ng-model="userSelected" style="width:80%;display:inline-block" placeholder="{{'ADD_SOMEBODY_TO_LIST' | translate}}..." typeahead="user as (user.name + ' (' + user.email + ')') for user in searchUsers($viewValue)" class="form-control">
+        <button type="submit" class="btn btn-default btn-info pull-right" style="width:18%;display:inline-block">{{'ADD' | translate}}</button>
     </form>
 
     <br>
 
-    <button class="btn btn-warning" hm-tap="unsubscribe()">Unsubscribe</button>
-    <button class="btn btn-default" hm-tap="cancel()">Cancel</button>
+    <button class="btn btn-warning" hm-tap="unsubscribe()">{{'UNSUBSCRIBE' | translate}}</button>
+    <button class="btn btn-default" hm-tap="cancel()">{{'CANCEL' | translate}}</button>
 </div>

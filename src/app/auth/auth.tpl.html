@@ -2,17 +2,17 @@
 
 <form role="form" novalidate ng-submit="performLogin()">
     <div class="form-group" ng-class="{ 'has-error': emailInvalid }">
-        <input type="email" class="form-control invalid" placeholder="E-mail" autofocus required ng-model="email" ng-blur="refreshButtonText()">
+        <input type="email" class="form-control invalid" placeholder="{{'EMAIL' | translate}}" autofocus required ng-model="email" ng-blur="refreshButtonText()">
     </div>
     <div class="form-group" ng-class="{ 'has-error': passwordInvalid }">
-        <input type="password" class="form-control" placeholder="Password" required ng-model="password">
+        <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}" required ng-model="password">
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Your name (so others can find you)" ng-model="name" ng-show="authButtonText === 'Register'">
+        <input type="text" class="form-control" placeholder="{{'YOUR_NAME' | translate}}" ng-model="name" ng-show="authButtonText === registerStr">
     </div>
     <div class="checkbox">
         <label>
-            <input type="checkbox" value="remember-me" ng-model="rememberMe"> Remember me
+            <input type="checkbox" value="remember-me" ng-model="rememberMe"> {{'REMEMBER_CREDENTIALS' | translate}}
         </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="! email || ! password">{{authButtonText}}</button>

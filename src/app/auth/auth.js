@@ -12,23 +12,27 @@ angular.module('shopper.auth', [
         }
     });
 })
-.controller('AuthCtrl', function($scope, $location, AuthService, Session) {
+.controller('AuthCtrl', function($scope, $location, $translate, AuthService, Session) {
     if (Session.isLoggedIn()) {
         $location.path('/home');
     }
 
-    var loginStr = 'Login', registerStr = 'Register';
     $scope.email = '';
     $scope.rememberMe = true;
-    $scope.authButtonText = loginStr + ' / ' + registerStr;
+    $scope.authButtonText = 
     $scope.emailInvalid = false;
     $scope.passwordInvalid = false;
+    $translate(['LOGIN', 'REGISTER']).then(function(translations) {
+        $scope.loginStr = translations.LOGIN;
+        $scope.registerStr = translations.REGISTER;
+        $scope.authButtonText = $scope.loginStr + ' / ' + $scope.registerStr;
+    });
 
     $scope.refreshButtonText = function() {
         if ($scope.email && $scope.email.trim() !== '') {
             $scope.emailInvalid = false;
             AuthService.checkIfLoginExists($scope.email).success(function(data) {
-                $scope.authButtonText = data.result ? loginStr : registerStr;
+                $scope.authButtonText = data.result ? $scope.loginStr : $scope.registerStr;
             });
         } else {
             $scope.emailInvalid = true;
@@ -58,7 +62,9 @@ angular.module('shopper.auth', [
                     if (data.result) {
                         $scope.performLogin();
                     } else {
-                        alert('Registration failed! :(');
+                        $translate('REGISTRATION_FAILED').then(function(translation) {
+                            alert(translation + '! :(');
+                        });
                     }
                 });
             }

@@ -12,7 +12,7 @@ angular.module('shopper.home', [
         }
     });
 })
-.controller('HomeCtrl', function($scope, $rootScope, $timeout, HomeService) {
+.controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, HomeService) {
     $scope.$on('bodyClicked', function(scope) {
         $scope.productSearchQuery = '';
     });
@@ -98,8 +98,10 @@ angular.module('shopper.home', [
     };
 
     $scope.addList = function() {
-        var name = prompt('What should we call it?');
-        if (name) {
+        $translate('WHAT_SHOULD_WE_CALL_IT').then(function(translation) {
+            var name = prompt(translation);
+            if (! name)
+                return;
             HomeService.addList(name).success(function(data) {
                 HomeService.getListsWithProductsOfUser().success(function() {
                     $timeout(function() {
@@ -107,7 +109,8 @@ angular.module('shopper.home', [
                     });
                 });
             });
-        }
+        });
+        
     };
 
     $scope.editList = function(index) {

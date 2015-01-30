@@ -1,13 +1,13 @@
 <nav role="navigation">
     <form>
-        <button hm-tap="addList()" class="btn btn-default">Add List</button>
-        <button hm-tap="refresh()" class="btn btn-default">Refresh</button>
-        <button hm-tap="logout()" class="btn btn-default">Logout</button>
+        <button hm-tap="addList()" class="btn btn-default">{{'ADD_LIST' | translate}}</button>
+        <button hm-tap="refresh()" class="btn btn-default">{{'REFRESH' | translate}}</button>
+        <button hm-tap="logout()" class="btn btn-default">{{'LOGOUT' | translate}}</button>
     </form>
     <br>
     <form role="search" ng-submit="addCustomProductToList(productSearchQuery)">
         <div class="form-group">
-            <input ng-model="productSearchQuery" class="form-control" placeholder="Search...">
+            <input ng-model="productSearchQuery" class="form-control" placeholder="{{'SEARCH' | translate}}...">
         </div>
     </form>
 </nav>
@@ -30,7 +30,7 @@
             <ul class="list-carousel" rn-carousel rn-carousel-indicator rn-carousel-index="currentListIndex">
                 <li ng-repeat="list in lists">
                     <!--Name of current list-->
-                    <h3 hm-tap="editList($index)" style="display:inline">{{list.name || 'Untitled'}}</h3>
+                    <h3 hm-tap="editList($index)" style="display:inline">{{list.name || 'UNTITLED' | translate}}</h3>
                     <ul class="users-of-list">
                         <li ng-repeat="user in list.users">{{user.name.split(' ')[0]}}</li>
                     </ul>
@@ -41,12 +41,12 @@
                             {{product.name}}
                         </button>
                     </div>
-                    <div ng-show="list.products.length === 0" class="help-block">This list is empty.</div>
+                    <div ng-show="list.products.length === 0" class="help-block">{{'LIST_EMPTY' | translate}}.</div>
                 </li>
             </ul>
             <div class="text-center shift-list-block">
-                <button class="btn btn-default" hm-tap="moveListOnePosition(-1)"><i class="fa fa-angle-double-left"></i> Shift left</button>
-                <button class="btn btn-default" hm-tap="moveListOnePosition(1)">Shift right <i class="fa fa-angle-double-right"></i></button>
+                <button class="btn btn-default" hm-tap="moveListOnePosition(-1)"><i class="fa fa-angle-double-left"></i> {{'SHIFT_LEFT' | translate}}</button>
+                <button class="btn btn-default" hm-tap="moveListOnePosition(1)">{{'SHIFT_RIGHT' | translate}} <i class="fa fa-angle-double-right"></i></button>
             </div>
         </div>
     </div>

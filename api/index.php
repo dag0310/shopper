@@ -76,7 +76,17 @@ class ShopperAPI {
 
         if ($bool) {
             $_GET['user_id'] = $this->db->lastInsertRowID();
-            $_GET['name'] = 'Shopping list';
+            $default_list_name = '';
+            switch (substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)) {
+                case 'de':
+                    $default_list_name = 'Einkaufsliste';
+                    break;
+                case 'en':
+                default:
+                    $default_list_name = 'Shopping list';
+            }
+            
+            $_GET['name'] = $default_list_name;
             return $this->add_list();
         }
         return $bool;

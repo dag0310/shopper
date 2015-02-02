@@ -78,7 +78,7 @@ var files = new Files();
 var sources = {};
 
 sources.js = [
-    'vendor/md5/src/md5.js',
+    'vendor/spark-md5/spark-md5.min.js',
     'vendor/jquery/dist/jquery.js',
     'vendor/add-to-homescreen/src/addtohomescreen.js',
     'vendor/hammerjs/hammer.js',

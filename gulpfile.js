@@ -337,13 +337,9 @@ gulp.task('dist', distTask);
 
 gulp.task('watch', ['build'], function() {
     gulp.watch([files.appScripts, files.templatesApp], ['lint', 'build:js']);
+    gulp.watch([files.appScripts], ['test']);
     gulp.watch(files.index, ['build:index']);
     gulp.watch([files.appStyles, files.styles], ['build:css']);
-    gulp.src(sources.karma)
-    .pipe(plugins.karma({
-        configFile: files.karmaConf,
-        action: 'watch'
-    }));
 });
 gulp.task('watch_fast', ['build_fast'], function() {
     gulp.watch([files.appScripts, files.templatesApp], ['build:js']);

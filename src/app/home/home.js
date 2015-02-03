@@ -42,8 +42,22 @@ angular.module('shopper.home', [
     });
 
     $scope.refresh = function(initialLoad) {
-        HomeService.getAllProducts();
-        HomeService.getListsWithProductsOfUser().then(function() {
+        var allProductsSorted = [];
+        var allProductsClean = JSON.parse(angular.toJson($scope.allProducts));
+        for (var i = 0; i < allProductsClean.length; i++) {
+            var arrayOfSortedKeyValues = [];
+            var keys = Object.keys(allProductsClean[i]).sort();
+            for (var j = 0; j < keys.length; j++) {
+                arrayOfSortedKeyValues.push(allProductsClean[i][keys[j]]);
+            }
+            allProductsSorted.push(arrayOfSortedKeyValues);
+        }
+        var allProductsSortedJsonString = JSON.stringify(allProductsSorted);
+        HomeService.getAllProducts(SparkMD5.hash(allProductsSortedJsonString));
+        
+        var listsClean = JSON.parse(angular.toJson($scope.lists));
+        var listsStringified = JSON.stringify(listsClean);
+        HomeService.getListsWithProductsOfUser(SparkMD5.hash(listsStringified)).then(function() {
             if (initialLoad) {
                 $timeout(function() {
                     if (localStorage.lastListId) {
@@ -57,6 +71,10 @@ angular.module('shopper.home', [
                 });
             }
         });
+        
+        $timeout(function() {
+            $scope.refresh();
+        }, 1500);
     };
 
     $scope.addCustomProductToList = function(name) {
@@ -149,27 +167,32 @@ angular.module('shopper.home', [
 
     $scope.showMe = true;
     $scope.lists = [];
+    $scope.allProducts = [];
     $scope.currentListIndex = 0;
     $scope.refresh(true);
 })
 .service('HomeService', function($http, $rootScope, Api, Session) {
-    this.getAllProducts = function() {
+    this.getAllProducts = function(hash) {
         var params = Api.getParams();
         params.cmd = 'get_all_products';
         params.user_id = Session.user.id;
+        params.hash = hash;
 
         $http.get(Api.url, { params: params }).success(function(data) {
-            $rootScope.$broadcast('updateAllProducts', data);
+            if (data !== 'null')
+                $rootScope.$broadcast('updateAllProducts', data);
         });
     };
 
-    this.getListsWithProductsOfUser = function() {
+    this.getListsWithProductsOfUser = function(hash) {
         var params = Api.getParams();
         params.cmd = 'get_lists_with_products_of_user';
         params.user_id = Session.user.id;
+        params.hash = hash;
 
         return $http.get(Api.url, { params: params }).success(function(data) {
-            $rootScope.$broadcast('updateLists', data);
+            if (data !== 'null')
+                $rootScope.$broadcast('updateLists', data);
         });
     };
 

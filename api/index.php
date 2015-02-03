@@ -177,8 +177,8 @@ class ShopperAPI {
         $sql = "SELECT * FROM list_of_user WHERE user_id = '$user_id' ORDER BY position ASC";
         return $this->fetch_all($sql);
     }
-    function get_lists_with_products_of_user($user_id = NULL) {
-        extract($this->get_params(array('user_id')));
+    function get_lists_with_products_of_user($user_id = NULL, $hash = NULL) {
+        extract($this->get_params(array('user_id', 'hash')));
         $sql = ""
             . "SELECT l.* "
             . "FROM list_of_user lof "
@@ -192,7 +192,8 @@ class ShopperAPI {
             $lists[$key]['users'] = $this->get_users_of_list($list['id']);
         }
 
-        return $lists;
+        $lists_json_string = json_encode($lists, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        return ($hash === md5($lists_json_string)) ? NULL : $lists;
     }
     function add_user_to_list($user_id = NULL, $list_id = NULL) {
         extract($this->get_params(array('user_id', 'list_id')));
@@ -257,14 +258,28 @@ class ShopperAPI {
             . "WHERE list_id = '$list_id'";
         return $this->fetch_all($sql);
     }
-    function get_all_products($user_id = NULL) {
-        extract($this->get_params(array('user_id')));
+    function get_all_products($user_id = NULL, $hash = NULL) {
+        extract($this->get_params(array('user_id', 'hash')));
         $sql = ""
             . "SELECT * "
             . "FROM product "
             . "WHERE created_by IS NULL "
             . "OR created_by = '$user_id'";
-        return $this->fetch_all($sql);
+        $all_products = $this->fetch_all($sql);
+        
+        $all_products_sorted = array();
+        foreach ($all_products as $product) {
+            $array_of_sorted_key_values = array();
+            $keys = array_keys($product);
+            sort($keys);
+            foreach ($keys as $key) {
+                array_push($array_of_sorted_key_values, $product[$key]);
+            }
+            array_push($all_products_sorted, $array_of_sorted_key_values);
+        }
+        $all_products_sorted_json_string = json_encode($all_products_sorted, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $new_hash = md5($all_products_sorted_json_string);
+        return ($hash === $new_hash) ? NULL : $all_products;
     }
     function get_all_products_created_by_user($user_id = NULL) {
         extract($this->get_params(array('user_id')));

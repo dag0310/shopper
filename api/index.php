@@ -228,7 +228,7 @@ class ShopperAPI {
     }
     function remove_product_from_list($product_id = NULL, $list_id = NULL) {
         extract($this->get_params(array('product_id', 'list_id')));
-        $sql = "DELETE FROM product_on_list WHERE list_id = '$list_id' AND product_id = '$product_id'";
+        $sql = "UPDATE product_on_list SET active = 0 WHERE list_id = '$list_id' AND product_id = '$product_id'";
         return $this->db->exec($sql);
     }
     function move_list_one_position($list_id, $direction, $user_id) {
@@ -258,6 +258,7 @@ class ShopperAPI {
             . "FROM product_on_list pol "
             . "INNER JOIN product p ON (p.id = pol.product_id)"
             . "WHERE list_id = '$list_id' "
+            . "AND pol.active = 1 "
             . "ORDER BY p.category_id ASC, p.name ASC";
         return $this->fetch_all($sql);
     }

@@ -127,6 +127,10 @@ angular.module('shopper.translation', [])
         ADD: [
             'Add',
             'Hinzufügen'
+        ],
+        CHANGE_COMMENT: [
+            'Change comment',
+            'Kommentar ändern'
         ]
     });
 

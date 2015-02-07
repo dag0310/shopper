@@ -298,6 +298,12 @@ class ShopperAPI {
         }
         return FALSE;
     }
+    
+    function change_comment($product_id = NULL, $list_id = NULL, $comment = NULL) {
+        extract($this->get_params(array('product_id', 'list_id', 'comment')));
+        $sql = "UPDATE product_on_list SET comment = '$comment' WHERE product_id = '$product_id' AND list_id = '$list_id'";
+        $this->db->exec($sql);
+    }
 
     // CATEGORY
     function get_category($category_id = NULL) {

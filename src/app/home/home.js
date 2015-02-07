@@ -12,7 +12,7 @@ angular.module('shopper.home', [
         }
     });
 })
-.controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, HomeService) {
+.controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, $window, HomeService) {
     $scope.$on('bodyClicked', function(scope, event) {
         var productSearchQueryKey = 'productSearchQuery';
         if (event.target.id === productSearchQueryKey)
@@ -117,7 +117,7 @@ angular.module('shopper.home', [
 
     $scope.removeProductFromList = function(product) {
         HomeService.removeProductFromList(product, getCurrentList());
-        getCurrentList().products[getCurrentList().products.indexOf(product)].deleted = true;
+        getCurrentList().products[getCurrentList().products.indexOf(product)].disabled = true;
     };
 
     $scope.addList = function() {
@@ -139,6 +139,19 @@ angular.module('shopper.home', [
     $scope.editList = function(index) {
         $scope.showMe = false;
         $rootScope.$broadcast('showListDetail', $scope.lists[index]);
+    };
+    
+    $scope.editComment = function (product, list) {
+        $translate('CHANGE_COMMENT').then(function(translation) {
+            var oldComment = (typeof product.comment === 'string') ? product.comment : '';
+            var newComment = $window.prompt(translation, oldComment);
+            if (newComment === null || newComment === oldComment)
+                return;
+            product.disabled = true;
+            HomeService.changeComment(product, list, newComment).then(function () {
+                $scope.refresh();
+            });
+        });
     };
 
     $scope.moveListOnePosition = function(direction) {
@@ -240,6 +253,16 @@ angular.module('shopper.home', [
         params.cmd = 'move_list_one_position';
         params.list_id = list_id;
         params.direction = direction;
+        params.user_id = Session.user.id;
+        return $http.get(Api.url, { params: params });
+    };
+    
+    this.changeComment = function (product, list, comment) {
+        var params = Api.getParams();
+        params.cmd = 'change_comment';
+        params.product_id = product.id;
+        params.list_id = list.id;
+        params.comment = comment;
         params.user_id = Session.user.id;
         return $http.get(Api.url, { params: params });
     };

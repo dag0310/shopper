@@ -13,7 +13,7 @@
 
 <div id="outer">
     <!--Filtered products-->
-    <div class="product-list" ng-show="productSearchQuery">
+    <div class="product-list" ng-show="!!productSearchQuery">
         <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
             {{product.name}}<br><small>{{product.comment}}</small>
         </button>

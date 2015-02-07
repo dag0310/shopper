@@ -255,7 +255,8 @@ class ShopperAPI {
             . "SELECT p.*, pol.* "
             . "FROM product_on_list pol "
             . "INNER JOIN product p ON (p.id = pol.product_id)"
-            . "WHERE list_id = '$list_id'";
+            . "WHERE list_id = '$list_id' "
+            . "ORDER BY p.category_id ASC, p.name ASC";
         return $this->fetch_all($sql);
     }
     function get_all_products($user_id = NULL, $hash = NULL) {
@@ -264,7 +265,8 @@ class ShopperAPI {
             . "SELECT * "
             . "FROM product "
             . "WHERE created_by IS NULL "
-            . "OR created_by = '$user_id'";
+            . "OR created_by = '$user_id' "
+            . "ORDER BY category_id ASC, name ASC";
         $all_products = $this->fetch_all($sql);
         
         $all_products_sorted = array();

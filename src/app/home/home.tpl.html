@@ -14,7 +14,7 @@
 <div id="outer">
     <!--Filtered products-->
     <div class="product-list" ng-show="productSearchQuery">
-        <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
+        <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
             {{product.name}}<br><small>{{product.comment}}</small>
         </button>
         <button class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
@@ -36,7 +36,7 @@
 
                     <!--Shopping list-->
                     <div class="product-list selected" ng-hide="list.products.length === 0">
-                        <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" hm-tap="removeProductFromList(product)">
+                        <button class="product" ng-repeat="product in list.products" hm-tap="removeProductFromList(product)">
                             {{product.name}}<br><small>{{product.comment}}</small>
                         </button>
                     </div>

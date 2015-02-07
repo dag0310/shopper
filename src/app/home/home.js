@@ -78,6 +78,9 @@ angular.module('shopper.home', [
     };
 
     $scope.addCustomProductToList = function(name) {
+        if (name.trim() === '')
+            return;
+        
         HomeService.addCustomProductToList($scope.capitalizeString(name), $scope.lists[$scope.currentListIndex]).success(function(data) {
             $scope.refresh();
         });

@@ -37,7 +37,7 @@
                     <!--Shopping list-->
                     <div class="product-list selected" ng-hide="list.products.length === 0">
                         <button class="product" ng-repeat="product in list.products | orderBy:'category_id' | orderBy:'name'" hm-tap="removeProductFromList(product)">
-                            {{product.name}}
+                            {{product.name}}<br><small>{{product.comment}}</small>
                         </button>
                     </div>
                     <div ng-show="list.products.length === 0" class="help-block">{{'LIST_EMPTY' | translate}}.</div>

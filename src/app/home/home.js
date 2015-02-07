@@ -246,6 +246,9 @@ angular.module('shopper.home', [
     }
     
     return function(items, query) {
+        if (query === undefined || query === '')
+            return items;
+        
         var i, j, filteredItems = [];
         query = query.toLowerCase();
         

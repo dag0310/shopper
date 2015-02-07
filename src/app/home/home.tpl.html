@@ -17,7 +17,7 @@
         <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
             {{product.name}}<br><small>{{product.comment}}</small>
         </button>
-        <button class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
+        <button id="add-custom-product" class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
     </div>
     
     <!--Carousel of lists-->

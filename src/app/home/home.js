@@ -15,7 +15,10 @@ angular.module('shopper.home', [
 .controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, $window, HomeService) {
     $scope.$on('bodyClicked', function(scope, event) {
         var productSearchQueryKey = 'productSearchQuery';
-        if (event.target.id === productSearchQueryKey)
+        if ([
+                productSearchQueryKey,
+                'add-custom-product'
+            ].indexOf(event.target.id !== -1))
             return;
         $scope[productSearchQueryKey] = '';
     });

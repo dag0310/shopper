@@ -14,10 +14,10 @@
 <div id="outer">
     <!--Filtered products-->
     <div class="product-list" ng-show="productSearchQuery">
-        <button class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
-        <button class="product" ng-repeat="product in allProducts | filter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
+        <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
             {{product.name}}
         </button>
+        <button class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
     </div>
     
     <!--Carousel of lists-->

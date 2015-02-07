@@ -238,4 +238,30 @@ angular.module('shopper.home', [
         return $http.get(Api.url, { params: params });
     };
 })
+.filter('productsFilter', function () {
+    return function(items, query) {
+        var i, j, filteredItems = [];
+        query = query.toLowerCase();
+        
+        for (i = 0; i < items.length; i++) {
+            var itemName = items[i].name.toLowerCase();
+            
+            if (query.indexOf(itemName) !== -1) {
+                filteredItems.push(items[i]);
+                continue;
+            }
+            
+            var queryTokens = query.split(' ');
+            for (j = 1; j <= queryTokens.length; j++) {
+                var pattern = queryTokens.slice(-j).join(' ');
+                if (itemName.startsWith(pattern)) {
+                    filteredItems.push(items[i]);
+                    break;
+                }
+            }
+        }
+        
+        return filteredItems;
+    };
+})
 ;

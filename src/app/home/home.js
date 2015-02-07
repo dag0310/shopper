@@ -99,12 +99,11 @@ angular.module('shopper.home', [
     };
 
     $scope.addProductToList = function(product) {
-        if ($scope.isProductInList(product)) {
+        if ($scope.isProductInList(product))
             return;
-        }
 
         HomeService.addProductToList(product, getCurrentList()).then(function() {
-            getCurrentList().products.push(product);
+            $scope.refresh();
         });
 
         $scope.productSearchQuery = '';
@@ -112,7 +111,7 @@ angular.module('shopper.home', [
 
     $scope.removeProductFromList = function(product) {
         HomeService.removeProductFromList(product, getCurrentList());
-        getCurrentList().products.splice(getCurrentList().products.indexOf(product), 1);
+        getCurrentList().products[getCurrentList().products.indexOf(product)].deleted = true;
     };
 
     $scope.addList = function() {

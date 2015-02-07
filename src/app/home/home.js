@@ -115,8 +115,8 @@ angular.module('shopper.home', [
         $scope.productSearchQuery = '';
     };
 
-    $scope.removeProductFromList = function(product) {
-        HomeService.removeProductFromList(product, getCurrentList());
+    $scope.changeActiveStateOfProductFromList = function(product, active) {
+        HomeService.changeActiveStateOfProductFromList(product, getCurrentList(), active);
         getCurrentList().products[getCurrentList().products.indexOf(product)].disabled = true;
     };
 
@@ -234,11 +234,12 @@ angular.module('shopper.home', [
         return $http.get(Api.url, { params: params });
     };
 
-    this.removeProductFromList = function(product, list) {
+    this.changeActiveStateOfProductFromList = function (product, list, active) {
         var params = Api.getParams();
-        params.cmd = 'remove_product_from_list';
+        params.cmd = 'change_active_state_of_product_from_list';
         params.product_id = product.id;
         params.list_id = list.id;
+        params.active = active;
         return $http.get(Api.url, { params: params });
     };
 

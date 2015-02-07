@@ -36,11 +36,18 @@
 
                     <!--Shopping list-->
                     <div class="product-list selected" ng-hide="list.products.length === 0">
-                        <button class="product" ng-repeat="product in list.products" hm-tap="removeProductFromList(product)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)">
+                        <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at'" hm-tap="changeActiveStateOfProductFromList(product, 0)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
                             {{product.name}}<br><small>{{product.comment}}</small>
                         </button>
                     </div>
                     <div ng-show="list.products.length === 0" class="help-block">{{'LIST_EMPTY' | translate}}.</div>
+                    
+                    <!--Last used products-->
+                    <div class="product-list removed" ng-hide="list.products.length === 0">
+                        <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at' | limitTo:10" hm-tap="changeActiveStateOfProductFromList(product, 1)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="! product.active">
+                            {{product.name}}<br><small>{{product.comment}}</small>
+                        </button>
+                    </div>
                 </li>
             </ul>
             <div class="text-center shift-list-block">

@@ -224,7 +224,16 @@ class ShopperAPI {
     function add_product_to_list($product_id = NULL, $list_id = NULL, $comment = NULL) {
         extract($this->get_params(array('product_id', 'list_id', 'comment')));
         $sql = "INSERT INTO product_on_list ('product_id', 'list_id', 'comment', 'created_at', 'modified_at') VALUES ('$product_id', '$list_id', '$comment', $this->unix_timestamp, $this->unix_timestamp)";
-        return $this->db->exec($sql);
+        $success = $this->db->exec($sql);
+        
+        if (! $success) {
+            $_GET['active'] = 1;
+            $success2 = $this->change_active_state_of_product_from_list();
+            $success3 = $this->change_comment();
+            return $success2 AND $success3;
+        }
+        
+        return $success;
     }
     function change_active_state_of_product_from_list($product_id = NULL, $list_id = NULL, $active = NULL) {
         extract($this->get_params(array('product_id', 'list_id', 'active')));

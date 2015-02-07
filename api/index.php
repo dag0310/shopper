@@ -296,6 +296,7 @@ class ShopperAPI {
 
         if ($this->db->exec($sql)) {
             $_GET['product_id'] = $this->db->lastInsertRowID();
+            $_GET['comment'] = '';
             return $this->add_product_to_list();
         }
         return FALSE;

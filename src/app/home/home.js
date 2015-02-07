@@ -13,8 +13,11 @@ angular.module('shopper.home', [
     });
 })
 .controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, HomeService) {
-    $scope.$on('bodyClicked', function(scope) {
-        $scope.productSearchQuery = '';
+    $scope.$on('bodyClicked', function(scope, event) {
+        var productSearchQueryKey = 'productSearchQuery';
+        if (event.target.id === productSearchQueryKey)
+            return;
+        $scope[productSearchQueryKey] = '';
     });
     
     $scope.$on('updateAllProducts', function(scope, data) {

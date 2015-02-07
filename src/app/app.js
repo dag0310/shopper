@@ -43,8 +43,8 @@ angular.module('shopper', [
         });
     };
     
-    $scope.bodyClicked = function() {
-        $scope.$broadcast('bodyClicked');
+    $scope.bodyClicked = function(event) {
+        $scope.$broadcast('bodyClicked', event);
     };
 
     if (typeof localStorage.user !== 'undefined') {

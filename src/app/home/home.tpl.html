@@ -6,7 +6,7 @@
     <br>
     <form role="search" ng-submit="addCustomProductToList(productSearchQuery)">
         <div class="form-group">
-            <input ng-model="productSearchQuery" class="form-control" placeholder="{{'SEARCH' | translate}}...">
+            <input id="productSearchQuery" ng-model="productSearchQuery" class="form-control" placeholder="{{'SEARCH' | translate}}..." hm-tap="$event.stopPropagation()">
         </div>
     </form>
 </nav>

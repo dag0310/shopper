@@ -100,7 +100,7 @@ angular.module('shopper.home', [
         }
 
         for (var i = 0; i < getCurrentList().products.length; i++) {
-            if (product.id === getCurrentList().products[i].id) {
+            if (product.id === getCurrentList().products[i].id && getCurrentList().products[i].active) {
                 return true;
             }
         }

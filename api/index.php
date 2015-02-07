@@ -16,6 +16,7 @@ class ShopperAPI {
 
     // Database handler
     private $db;
+    private $unix_timestamp;
 
     /**
 	 * Not a callable function, initializes API
@@ -25,6 +26,7 @@ class ShopperAPI {
         if (isset($_GET['cmd'])) {
             $cmd = $_GET['cmd'];
             $this->db = new SQLite3('shopper.db');
+            $this->unix_timestamp = time();
 
             $cmds_no_valid_login_required = array('is_login_valid', 'login_exists', 'register_user', 'get_user_by_email');
             $response = (in_array($cmd, $cmds_no_valid_login_required) OR $this->is_login_valid()) ?
@@ -71,7 +73,7 @@ class ShopperAPI {
 	 */
     function register_user($email = NULL, $password = NULL, $name = NULL) {
         extract($this->get_params(array('email', 'password', 'name')));
-        $sql = "INSERT INTO user ('email', 'password', 'name') VALUES ('$email', '$password', '$name')";
+        $sql = "INSERT INTO user ('email', 'password', 'name', 'created_at', 'modified_at') VALUES ('$email', '$password', '$name', $this->unix_timestamp, $this->unix_timestamp)";
         $bool = $this->db->exec($sql);
 
         if ($bool) {
@@ -141,7 +143,7 @@ class ShopperAPI {
     // LIST
     function add_list($name = NULL, $user_id = NULL) {
         extract($this->get_params(array('name', 'user_id')));
-        $sql = "INSERT INTO list ('name', 'created_by') VALUES ('$name', '$user_id')";
+        $sql = "INSERT INTO list ('name', 'created_by', 'created_at', 'modified_at') VALUES ('$name', '$user_id', $this->unix_timestamp, $this->unix_timestamp)";
         $list_was_created = $this->db->exec($sql);
 
         // Add user to list
@@ -201,7 +203,7 @@ class ShopperAPI {
         $sql = "SELECT MAX(position) FROM list_of_user WHERE user_id = $user_id";
         $position = ((int) $this->fetch_value($sql)) + 1;
         
-        $sql = "INSERT INTO list_of_user ('list_id', 'user_id', 'position') VALUES ('$list_id', '$user_id', '$position')";
+        $sql = "INSERT INTO list_of_user ('list_id', 'user_id', 'position', 'created_at', 'modified_at') VALUES ('$list_id', '$user_id', '$position', $this->unix_timestamp, $this->unix_timestamp)";
         $bool = $this->db->exec($sql);
         return $bool;
     }
@@ -216,12 +218,12 @@ class ShopperAPI {
     }
     function update_list($list_id = NULL, $name = NULL) {
         extract($this->get_params(array('list_id', 'name')));
-        $sql = "UPDATE list SET name = '$name' WHERE id = '$list_id'";
+        $sql = "UPDATE list SET name = '$name', modified_at = $this->unix_timestamp WHERE id = '$list_id'";
         return $this->db->exec($sql);
     }
     function add_product_to_list($product_id = NULL, $list_id = NULL, $comment = NULL) {
         extract($this->get_params(array('product_id', 'list_id', 'comment')));
-        $sql = "INSERT INTO product_on_list ('product_id', 'list_id', 'comment') VALUES ('$product_id', '$list_id', '$comment')";
+        $sql = "INSERT INTO product_on_list ('product_id', 'list_id', 'comment', 'created_at', 'modified_at') VALUES ('$product_id', '$list_id', '$comment', $this->unix_timestamp, $this->unix_timestamp)";
         return $this->db->exec($sql);
     }
     function remove_product_from_list($product_id = NULL, $list_id = NULL) {
@@ -235,9 +237,9 @@ class ShopperAPI {
         $position = (int) $this->fetch_value($sql);
         $new_position = $position + ((int) $direction);
         
-        $sql = "UPDATE list_of_user SET position = '$position' WHERE position = '$new_position' AND user_id = '$user_id'";
+        $sql = "UPDATE list_of_user SET position = '$position', modified_at = $this->unix_timestamp WHERE position = '$new_position' AND user_id = '$user_id'";
         $this->db->exec($sql);
-        $sql = "UPDATE list_of_user SET position = '$new_position' WHERE list_id = '$list_id' AND user_id = '$user_id'";
+        $sql = "UPDATE list_of_user SET position = '$new_position', modified_at = $this->unix_timestamp WHERE list_id = '$list_id' AND user_id = '$user_id'";
         $this->db->exec($sql);
     }
 
@@ -290,7 +292,7 @@ class ShopperAPI {
     }
     function add_custom_product_to_list($name = NULL, $list_id = NULL, $user_id = NULL) {
         extract($this->get_params(array('name', 'user_id')));
-        $sql = "INSERT INTO product ('name', 'created_by') VALUES ('$name', '$user_id')";
+        $sql = "INSERT INTO product ('name', 'created_by', 'created_at', 'modified_at') VALUES ('$name', '$user_id', $this->unix_timestamp, $this->unix_timestamp)";
 
         if ($this->db->exec($sql)) {
             $_GET['product_id'] = $this->db->lastInsertRowID();
@@ -301,7 +303,7 @@ class ShopperAPI {
     
     function change_comment($product_id = NULL, $list_id = NULL, $comment = NULL) {
         extract($this->get_params(array('product_id', 'list_id', 'comment')));
-        $sql = "UPDATE product_on_list SET comment = '$comment' WHERE product_id = '$product_id' AND list_id = '$list_id'";
+        $sql = "UPDATE product_on_list SET comment = '$comment', modified_at = $this->unix_timestamp WHERE product_id = '$product_id' AND list_id = '$list_id'";
         $this->db->exec($sql);
     }
 

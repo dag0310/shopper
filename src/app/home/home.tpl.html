@@ -36,7 +36,7 @@
 
                     <!--Shopping list-->
                     <div class="product-list selected" ng-hide="list.products.length === 0">
-                        <button class="product" ng-repeat="product in list.products" hm-tap="removeProductFromList(product)" ng-disabled="product.disabled" hm-hold="editComment(product, list)">
+                        <button class="product" ng-repeat="product in list.products" hm-tap="removeProductFromList(product)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)">
                             {{product.name}}<br><small>{{product.comment}}</small>
                         </button>
                     </div>

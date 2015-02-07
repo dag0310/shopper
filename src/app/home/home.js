@@ -143,14 +143,16 @@ angular.module('shopper.home', [
     
     $scope.editComment = function (product, list) {
         $translate('CHANGE_COMMENT').then(function(translation) {
-            var oldComment = (typeof product.comment === 'string') ? product.comment : '';
-            var newComment = $window.prompt(translation, oldComment);
-            if (newComment === null || newComment === oldComment)
-                return;
-            product.disabled = true;
-            HomeService.changeComment(product, list, newComment).then(function () {
-                $scope.refresh();
-            });
+            $timeout(function() {
+                var oldComment = (typeof product.comment === 'string') ? product.comment : '';
+                var newComment = $window.prompt(translation, oldComment);
+                if (newComment === null || newComment === oldComment)
+                    return;
+                product.disabled = true;
+                HomeService.changeComment(product, list, newComment).then(function () {
+                    $scope.refresh();
+                });
+            }, 0);
         });
     };
 

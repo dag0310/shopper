@@ -201,6 +201,7 @@ angular.module('shopper.home', [
         params.cmd = 'add_product_to_list';
         params.product_id = product.id;
         params.list_id = list.id;
+        params.comment = product.comment;
         return $http.get(Api.url, { params: params });
     };
 

@@ -219,9 +219,9 @@ class ShopperAPI {
         $sql = "UPDATE list SET name = '$name' WHERE id = '$list_id'";
         return $this->db->exec($sql);
     }
-    function add_product_to_list($product_id = NULL, $list_id = NULL) {
-        extract($this->get_params(array('product_id', 'list_id')));
-        $sql = "INSERT INTO product_on_list ('product_id', 'list_id') VALUES ('$product_id', '$list_id')";
+    function add_product_to_list($product_id = NULL, $list_id = NULL, $comment = NULL) {
+        extract($this->get_params(array('product_id', 'list_id', 'comment')));
+        $sql = "INSERT INTO product_on_list ('product_id', 'list_id', 'comment') VALUES ('$product_id', '$list_id', '$comment')";
         return $this->db->exec($sql);
     }
     function remove_product_from_list($product_id = NULL, $list_id = NULL) {
@@ -252,7 +252,7 @@ class ShopperAPI {
             extract($this->get_params(array('list_id')));
         }
         $sql = ""
-            . "SELECT p.* "
+            . "SELECT p.*, pol.* "
             . "FROM product_on_list pol "
             . "INNER JOIN product p ON (p.id = pol.product_id)"
             . "WHERE list_id = '$list_id'";

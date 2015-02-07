@@ -239,6 +239,12 @@ angular.module('shopper.home', [
     };
 })
 .filter('productsFilter', function () {
+    function fetchComment(query, pattern) {
+        if (query.indexOf(' ' + pattern) !== -1)
+            pattern = ' ' + pattern;
+        return query.replace(pattern, '');
+    }
+    
     return function(items, query) {
         var i, j, filteredItems = [];
         query = query.toLowerCase();
@@ -247,6 +253,7 @@ angular.module('shopper.home', [
             var itemName = items[i].name.toLowerCase();
             
             if (query.indexOf(itemName) !== -1) {
+                items[i].comment = fetchComment(query, itemName);
                 filteredItems.push(items[i]);
                 continue;
             }
@@ -255,6 +262,7 @@ angular.module('shopper.home', [
             for (j = 1; j <= queryTokens.length; j++) {
                 var pattern = queryTokens.slice(-j).join(' ');
                 if (itemName.startsWith(pattern)) {
+                    items[i].comment = fetchComment(query, pattern);
                     filteredItems.push(items[i]);
                     break;
                 }

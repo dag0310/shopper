@@ -15,7 +15,7 @@
     <!--Filtered products-->
     <div class="product-list" ng-show="productSearchQuery">
         <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15 | orderBy:'category_id' | orderBy:'name'" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
-            {{product.name}}
+            {{product.name}}<br><small>{{product.comment}}</small>
         </button>
         <button class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
     </div>

@@ -89,12 +89,12 @@ angular.module('shopper.translation', [])
             'Diese Liste ist leer'
         ],
         SHIFT_LEFT: [
-            'Shift to the left',
-            'Nach links verschieben'
+            'Shift list one to the left',
+            'Liste eins nach links verschieben'
         ],
         SHIFT_RIGHT: [
-            'Shift to the right',
-            'Nach rechts verschieben'
+            'Shift list one to the right',
+            'Liste eins nach rechts verschieben'
         ],
         UNTITLED: [
             'Untitled',

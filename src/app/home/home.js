@@ -193,7 +193,7 @@ angular.module('shopper.home', [
                 return true;
         }
         return false;
-    }
+    };
 
     function getCurrentList() {
         return $scope.lists[$scope.currentListIndex];
@@ -209,7 +209,7 @@ angular.module('shopper.home', [
 .service('HomeService', function($http, $rootScope, Api, Session) {
     this.getNameOfUser = function () {
         return Session.user.name;
-    }
+    };
     
     this.getAllProducts = function(hash) {
         var params = Api.getParams();

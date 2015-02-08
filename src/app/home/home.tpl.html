@@ -38,7 +38,7 @@
 
                     <!--Shopping list-->
                     <div class="product-list selected" ng-hide="list.products.length === 0">
-                        <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at'" hm-tap="changeActiveStateOfProductFromList(product, 0)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
+                        <button class="product" ng-repeat="product in list.products" hm-tap="changeActiveStateOfProductFromList(product, 0)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
                             {{product.name}}
                             <br>
                             &nbsp;<small>{{product.comment}}</small>&nbsp;

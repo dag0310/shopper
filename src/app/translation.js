@@ -105,8 +105,8 @@ angular.module('shopper.translation', [])
             'Diese Liste sicher abbestellen?'
         ],
         SEARCH: [
-            'Search',
-            'Suchen'
+            'What do you need?',
+            'Was brauchst du?'
         ],
         SURE_LOGOUT: [
             'Are you sure you want to logout?',

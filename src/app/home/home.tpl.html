@@ -15,7 +15,9 @@
     <!--Filtered products-->
     <div class="product-list" ng-show="!!productSearchQuery">
         <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
-            {{product.name}}<br><small>{{product.comment}}</small>
+            {{product.name}}
+            <br>
+            &nbsp;<small>{{product.comment}}</small>&nbsp;
         </button>
         <button id="add-custom-product" class="product" hm-tap="addCustomProductToList(productSearchQuery)">{{capitalizeString(productSearchQuery)}}</button>
     </div>
@@ -37,7 +39,9 @@
                     <!--Shopping list-->
                     <div class="product-list selected" ng-hide="list.products.length === 0">
                         <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at'" hm-tap="changeActiveStateOfProductFromList(product, 0)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
-                            {{product.name}}<br><small>{{product.comment}}</small>
+                            {{product.name}}
+                            <br>
+                            &nbsp;<small>{{product.comment}}</small>&nbsp;
                         </button>
                     </div>
                     <div ng-show="list.products.length === 0" class="help-block">{{'LIST_EMPTY' | translate}}.</div>
@@ -45,7 +49,9 @@
                     <!--Last used products-->
                     <div class="product-list removed" ng-hide="list.products.length === 0">
                         <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at' | limitTo:10" hm-tap="changeActiveStateOfProductFromList(product, 1)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="! product.active">
-                            {{product.name}}<br><small>{{product.comment}}</small>
+                            {{product.name}}
+                            <br>
+                            &nbsp;<small>{{product.comment}}</small>&nbsp;
                         </button>
                     </div>
                 </li>
@@ -56,4 +62,5 @@
             </div>
         </div>
     </div>
+    <div class="footer text-center"></div>
 </div>

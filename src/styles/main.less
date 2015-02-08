@@ -8,32 +8,41 @@
     src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
 }
 
+@background: #222;
+@inner: #404040;
+@text: #DDD;
+@button: #DDD;
+@outer-margin: 10px;
+
 html, body {
+    background-color: @background;
+    color: @text;
     height: 100%;
     margin: 0;
-}
-
-body {
-    background-color: white;
+    margin-top: 10px;
 }
 
 h1, h2, h3, h4 {
     margin-top: 0;
 }
 
+.btn-default {
+    background-color: @button;
+}
+
 #screen {
     max-width: 550px;
-    background-color: white;
+    background-color: @background;
     margin: 0 auto;
     height: 100%;
     position: relative;
     top: 0;
     bottom: 0;
-    padding: 10px;
+    padding: @outer-margin;
 }
 
 .my-list {
-    background-color: #F8F8F8;
+    background-color: @inner;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
     padding: 10px;
 }
@@ -109,4 +118,10 @@ h1, h2, h3, h4 {
 
 .shift-list-block {
   margin-top: 15px;
+}
+
+.footer {
+    margin-top: @outer-margin;
+    padding-bottom: @outer-margin;
+    color: #444;
 }

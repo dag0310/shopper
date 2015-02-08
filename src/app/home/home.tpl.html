@@ -1,15 +1,18 @@
-<nav role="navigation">
-    <form>
-        <button hm-tap="addList()" class="btn btn-default">{{'ADD_LIST' | translate}}</button>
-        <button hm-tap="logout()" class="btn btn-default">{{'LOGOUT' | translate}}</button>
-    </form>
-    <br>
-    <form role="search">
+<div class="top">
+    <div class="greeting">
+        {{'HELLO' | translate}} {{nameOfUser}}!
+    </div>
+    <nav class="pull-right">
+        <button hm-tap="addList()" class="btn btn-default"><i class="fa fa-plus"></i> {{'ADD_LIST' | translate}}</button>
+        <button hm-tap="logout()" class="btn btn-default"><i class="fa fa-sign-out"></i> {{'LOGOUT' | translate}}</button>
+    </div>
+    <div class="clearfix"></div>
+    <form class="search-form" role="search">
         <div class="form-group">
             <input id="productSearchQuery" ng-model="productSearchQuery" class="form-control" placeholder="{{'SEARCH' | translate}}">
         </div>
     </form>
-</nav>
+</div>
 
 <div id="outer">
     <!--Filtered products-->

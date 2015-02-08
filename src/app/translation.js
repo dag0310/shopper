@@ -53,9 +53,13 @@ angular.module('shopper.translation', [])
         REFRESH: [
             'Refresh',
             'Aktualisieren'],
+        HELLO: [
+            'Hello',
+            'Hallo'
+        ],
         ADD_LIST: [
-            'Add new list',
-            'Neue Liste hinzufügen'],
+            'New list',
+            'Neue Liste'],
         TRANSLATION_FAILED: [
             'Registration failed',
             'Registrierung fehlgeschlagen'

@@ -192,9 +192,14 @@ angular.module('shopper.home', [
     $scope.lists = [];
     $scope.allProducts = [];
     $scope.currentListIndex = 0;
+    $scope.nameOfUser = HomeService.getNameOfUser();
     $scope.refresh(true);
 })
 .service('HomeService', function($http, $rootScope, Api, Session) {
+    this.getNameOfUser = function () {
+        return Session.user.name;
+    }
+    
     this.getAllProducts = function(hash) {
         var params = Api.getParams();
         params.cmd = 'get_all_products';

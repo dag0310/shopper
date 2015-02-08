@@ -16,9 +16,9 @@ angular.module('shopper.home', [
     $scope.$on('bodyClicked', function(scope, event) {
         var productSearchQueryKey = 'productSearchQuery';
         if ([
-                productSearchQueryKey,
-                'add-custom-product'
-            ].indexOf(event.target.id !== -1))
+            productSearchQueryKey,
+            'add-custom-product'
+        ].indexOf(event.target.id) !== -1)
             return;
         $scope[productSearchQueryKey] = '';
     });

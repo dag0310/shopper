@@ -183,6 +183,17 @@ angular.module('shopper.home', [
         }
         return '';
     };
+    
+    $scope.isAProductName = function (searchQuery) {
+        if (searchQuery === undefined)
+            return false;
+        searchQuery = searchQuery.toLowerCase();
+        for (var i = 0; i < $scope.allProducts.length; i++) {
+            if (searchQuery === $scope.allProducts[i].name.toLowerCase())
+                return true;
+        }
+        return false;
+    }
 
     function getCurrentList() {
         return $scope.lists[$scope.currentListIndex];

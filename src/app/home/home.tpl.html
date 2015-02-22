@@ -40,23 +40,25 @@
                     </ul>
 
                     <!--Shopping list-->
-                    <div class="product-list selected" ng-hide="list.products.length === 0">
+                    <div class="product-list selected" ng-show="hasProducts(list.products, true)">
                         <button class="product" ng-repeat="product in list.products" hm-tap="changeActiveStateOfProductFromList(product, 0)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
                             {{product.name}}
                             <br>
                             &nbsp;<small>{{product.comment}}</small>&nbsp;
                         </button>
                     </div>
-                    <div ng-show="list.products.length === 0" class="help-block">{{'LIST_EMPTY' | translate}}.</div>
+                    <div ng-show="! hasProducts(list.products, true)" class="help-block">{{'LIST_EMPTY' | translate}}.</div>
                     
                     <!--Last used products-->
-                    <div class="product-list removed" ng-hide="list.products.length === 0">
+                    <h4>{{'LAST_USED' | translate}}</h4>
+                    <div class="product-list removed" ng-show="hasProducts(list.products, false)">
                         <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at' | limitTo:10" hm-tap="changeActiveStateOfProductFromList(product, 1)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="! product.active">
                             {{product.name}}
                             <br>
                             &nbsp;<small>{{product.comment}}</small>&nbsp;
                         </button>
                     </div>
+                    <div ng-show="! hasProducts(list.products, false)" class="help-block">{{'NO_LAST_USED' | translate}}.</div>
                 </li>
             </ul>
             <div class="text-center shift-list-block">

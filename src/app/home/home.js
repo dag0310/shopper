@@ -194,6 +194,16 @@ angular.module('shopper.home', [
         }
         return false;
     };
+    
+    $scope.hasProducts = function (products, active) {
+        var numProducts = 0;
+        active = active ? 1 : 0;
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].active === active)
+                numProducts++;
+        }
+        return numProducts > 0;
+    };
 
     function getCurrentList() {
         return $scope.lists[$scope.currentListIndex];

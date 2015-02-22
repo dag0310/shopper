@@ -135,6 +135,14 @@ angular.module('shopper.translation', [])
         CHANGE_COMMENT: [
             'Change comment',
             'Kommentar ändern'
+        ],
+        LAST_USED: [
+            'Last used',
+            'Zuletzt verwendet'
+        ],
+        NO_LAST_USED: [
+            'No last used products for this list',
+            'Keine zuletzt verwendeten Produkte für diese Liste'
         ]
     });
 

@@ -301,9 +301,9 @@ angular.module('shopper.home', [
 })
 .filter('productsFilter', function () {
     function fetchComment(query, pattern) {
-        if (query.indexOf(' ' + pattern) !== -1)
+        if (query.toLowerCase().indexOf(' ' + pattern) !== -1)
             pattern = ' ' + pattern;
-        return query.replace(pattern, '');
+        return query.replace(new RegExp(pattern, 'ig'), '');
     }
     
     return function(items, query) {
@@ -311,21 +311,21 @@ angular.module('shopper.home', [
             return items;
         
         var i, j, filteredItems = [];
-        query = query.toLowerCase();
+        var queryLowerCase = query.toLowerCase();
         
         for (i = 0; i < items.length; i++) {
-            var itemName = items[i].name.toLowerCase();
+            var itemNameLowerCase = items[i].name.toLowerCase();
             
-            if (query.indexOf(itemName) !== -1) {
-                items[i].comment = fetchComment(query, itemName);
+            if (queryLowerCase.indexOf(itemNameLowerCase) !== -1) {
+                items[i].comment = fetchComment(query, itemNameLowerCase);
                 filteredItems.push(items[i]);
                 continue;
             }
             
-            var queryTokens = query.split(' ');
+            var queryTokens = queryLowerCase.split(' ');
             for (j = 1; j <= queryTokens.length; j++) {
                 var pattern = queryTokens.slice(-j).join(' ');
-                if (itemName.startsWith(pattern)) {
+                if (itemNameLowerCase.startsWith(pattern)) {
                     items[i].comment = fetchComment(query, pattern);
                     filteredItems.push(items[i]);
                     break;

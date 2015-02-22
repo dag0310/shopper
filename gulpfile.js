@@ -78,18 +78,18 @@ var files = new Files();
 var sources = {};
 
 sources.js = [
-    'vendor/spark-md5/spark-md5.min.js',
-    'vendor/jquery/dist/jquery.js',
-    'vendor/add-to-homescreen/src/addtohomescreen.js',
-    'vendor/hammerjs/hammer.js',
-    'vendor/angular/angular.js',
-    'vendor/angular-touch/angular-touch.js',
-    'vendor/angular-animate/angular-animate.js',
-    'vendor/angular-translate/angular-translate.js',
-    'vendor/angular-ui-router/release/angular-ui-router.js',
-    'vendor/angular-gestures/gestures.js',
-    'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
-    'vendor/angular-carousel/dist/angular-carousel.js'
+    paths.vendor + 'spark-md5/spark-md5.min.js',
+    paths.vendor + 'jquery/dist/jquery.js',
+    paths.vendor + 'add-to-homescreen/src/addtohomescreen.js',
+    paths.vendor + 'hammerjs/hammer.js',
+    paths.vendor + 'angular/angular.js',
+    paths.vendor + 'angular-touch/angular-touch.js',
+    paths.vendor + 'angular-animate/angular-animate.js',
+    paths.vendor + 'angular-translate/angular-translate.js',
+    paths.vendor + 'angular-ui-router/release/angular-ui-router.js',
+    paths.vendor + 'angular-gestures/gestures.js',
+    paths.vendor + 'angular-bootstrap/ui-bootstrap-tpls.js',
+    paths.vendor + 'angular-carousel/dist/angular-carousel.js'
 ]
 .concat([
     paths.custom + 'global.js',
@@ -110,11 +110,11 @@ sources.less = [
 ];
 
 sources.karma = [
-    'vendor/angular/angular.js',
-    'vendor/angular-ui-router/release/angular-ui-router.js',
-    'vendor/angular-mocks/angular-mocks.js',
+    paths.vendor + 'angular/angular.js',
+    paths.vendor + 'angular-ui-router/release/angular-ui-router.js',
+    paths.vendor + 'angular-mocks/angular-mocks.js',
     files.appScriptsAll
-]
+];
 
 // ----------------------------
 // G E N E R A L   T A S K S

@@ -44,7 +44,6 @@
     "streamqueue": "^0.1.1"
   },
   "jshintConfig": {
-    "devel": true,
     "predef": [
       "angular"
     ]

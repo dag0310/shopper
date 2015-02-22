@@ -12,7 +12,7 @@ angular.module('shopper.home', [
         }
     });
 })
-.controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, $window, HomeService) {
+.controller('HomeCtrl', function($scope, $rootScope, $timeout, $translate, $window, $modal, HomeService) {
     $scope.$on('bodyClicked', function(scope, event) {
         var productSearchQueryKey = 'productSearchQuery';
         if ([
@@ -124,19 +124,31 @@ angular.module('shopper.home', [
     };
 
     $scope.addList = function() {
-        $translate('WHAT_SHOULD_WE_CALL_IT').then(function(translation) {
-            var name = prompt(translation);
-            if (! name)
-                return;
-            HomeService.addList(name).success(function(data) {
-                HomeService.getListsWithProductsOfUser().success(function() {
-                    $timeout(function() {
-                        $scope.currentListIndex = $scope.lists.length - 1;
+        $translate(['ADD_LIST', 'WHAT_SHOULD_WE_CALL_IT', 'ADD', 'CANCEL']).then(function(tr) {
+            $modal.open({
+            templateUrl: 'modal.tpl.html',
+            controller: 'ModalCtrl',
+            resolve: {
+                data: function () {
+                    return {
+                        title: tr.ADD_LIST,
+                        message: tr.WHAT_SHOULD_WE_CALL_IT,
+                        input: '',
+                        ok: { text: tr.ADD },
+                        cancel: { text: tr.CANCEL }
+                    };
+                }
+            }
+            }).result.then(function (name) {
+                HomeService.addList(name).success(function(data) {
+                    HomeService.getListsWithProductsOfUser().success(function() {
+                        $timeout(function() {
+                            $scope.currentListIndex = $scope.lists.length - 1;
+                        });
                     });
                 });
             });
         });
-        
     };
 
     $scope.editList = function(index) {
@@ -145,17 +157,31 @@ angular.module('shopper.home', [
     };
     
     $scope.editComment = function (product, list) {
-        $translate('CHANGE_COMMENT').then(function(translation) {
-            $timeout(function() {
-                var oldComment = (typeof product.comment === 'string') ? product.comment : '';
-                var newComment = $window.prompt(translation, oldComment);
-                if (newComment === null || newComment === oldComment)
+        var oldComment = (typeof product.comment === 'string') ? product.comment : '';
+        
+        $translate(['CHANGE_COMMENT', 'CHANGE', 'CANCEL']).then(function(tr) {
+            $modal.open({
+            templateUrl: 'modal.tpl.html',
+            controller: 'ModalCtrl',
+            resolve: {
+                data: function () {
+                    return {
+                        title: tr.CHANGE_COMMENT,
+                        message: product.name,
+                        input: oldComment,
+                        ok: { text: tr.CHANGE },
+                        cancel: { text: tr.CANCEL }
+                    };
+                }
+            }
+            }).result.then(function (newComment) {
+                if (newComment === oldComment)
                     return;
                 product.disabled = true;
                 HomeService.changeComment(product, list, newComment).then(function () {
                     $scope.refresh();
                 });
-            }, 0);
+            });
         });
     };
 

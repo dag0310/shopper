@@ -29,7 +29,7 @@ angular.module('shopper', [
 .run(function run () {
 
 })
-.controller('AppCtrl', function($scope, $location, $translate, Session) {
+.controller('AppCtrl', function($scope, $location, $translate, $modal, Session) {
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
         if (! Session.isLoggedIn()) {
             $location.path('/auth');
@@ -37,9 +37,23 @@ angular.module('shopper', [
     });
 
     $scope.logout = function() {
-        $translate('SURE_LOGOUT').then(function(translation) {
-            if (confirm(translation))
+        $translate(['LOGOUT', 'SURE_LOGOUT', 'YES', 'NO']).then(function(tr) {
+            $modal.open({
+            templateUrl: 'modal.tpl.html',
+            controller: 'ModalCtrl',
+            resolve: {
+                data: function () {
+                    return {
+                        title: tr.LOGOUT,
+                        message: tr.SURE_LOGOUT,
+                        ok: { text: tr.YES },
+                        cancel: { text: tr.NO }
+                    };
+                }
+            }
+            }).result.then(function () {
                 Session.logout();
+            });
         });
     };
     
@@ -51,6 +65,17 @@ angular.module('shopper', [
         Session.login(JSON.parse(localStorage.user));
         $location.path('/home');
     }
+})
+.controller('ModalCtrl', function ($scope, $modalInstance, data) {
+    $scope.data = data;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.data.input);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    };
 })
 .service('Session', function($location) {
     var self = this;

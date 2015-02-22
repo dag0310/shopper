@@ -143,6 +143,10 @@ angular.module('shopper.translation', [])
         NO_LAST_USED: [
             'No last used products for this list',
             'Keine zuletzt verwendeten Produkte für diese Liste'
+        ],
+        CHANGE: [
+            'Change',
+            'Ändern'
         ]
     });
 

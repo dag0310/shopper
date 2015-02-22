@@ -12,7 +12,7 @@ angular.module('shopper.auth', [
         }
     });
 })
-.controller('AuthCtrl', function($scope, $location, $translate, AuthService, Session) {
+.controller('AuthCtrl', function($scope, $location, $translate, $modal, AuthService, Session) {
     if (Session.isLoggedIn()) {
         $location.path('/home');
     }
@@ -62,8 +62,19 @@ angular.module('shopper.auth', [
                     if (data.result) {
                         $scope.performLogin();
                     } else {
-                        $translate('REGISTRATION_FAILED').then(function(translation) {
-                            alert(translation + '! :(');
+                        $translate(['REGISTRATION_FAILED', 'OK']).then(function (tr) {
+                            $modal.open({
+                            templateUrl: 'modal.tpl.html',
+                            controller: 'ModalCtrl',
+                            resolve: {
+                                data: function () {
+                                    return {
+                                        title: tr.REGISTRATION_FAILED + '! :(',
+                                        ok: { text: tr.OK }
+                                    };
+                                }
+                            }
+                            });
                         });
                     }
                 });

@@ -1,5 +1,5 @@
 angular.module('shopper.list', [])
-.controller('ListCtrl', function($scope, $rootScope, $translate, ListService, HomeService, Session) {
+.controller('ListCtrl', function($scope, $rootScope, $translate, $modal, ListService, HomeService, Session) {
     $scope.$on('showListDetail', function(scope, list) {
         $scope.showMe = ! $scope.showMe;
         if ($scope.showMe) {
@@ -50,15 +50,28 @@ angular.module('shopper.list', [])
     };
 
     $scope.unsubscribe = function() {
-        $translate('UNSUBSCRIBE_SURE').then(function(translation) {
-            if (! confirm(translation))
-                return;
-            ListService.unsubscribeUserFromList(Session.user, $scope.list).success(function() {
-                HomeService.getListsWithProductsOfUser().success(function() {
-                    $rootScope.$broadcast('goToFirstList');
+        $translate(['UNSUBSCRIBE', 'UNSUBSCRIBE_SURE', 'YES', 'NO']).then(function(tr) {
+            $modal.open({
+            templateUrl: 'modal.tpl.html',
+            controller: 'ModalCtrl',
+            resolve: {
+                data: function () {
+                    return {
+                        title: tr.UNSUBSCRIBE,
+                        message: tr.UNSUBSCRIBE_SURE,
+                        ok: { text: tr.YES },
+                        cancel: { text: tr.NO }
+                    };
+                }
+            }
+            }).result.then(function () {
+                ListService.unsubscribeUserFromList(Session.user, $scope.list).success(function() {
+                    HomeService.getListsWithProductsOfUser().success(function() {
+                        $rootScope.$broadcast('goToFirstList');
+                    });
                 });
+                $scope.cancel();
             });
-            $scope.cancel();
         });
     };
 

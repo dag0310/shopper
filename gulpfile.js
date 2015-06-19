@@ -16,7 +16,6 @@ plugins.streamqueue = require('streamqueue');
 // V A R S
 // ----------------------------
 var Filenames = function() {
-    this.database = 'shopper.db';
     this.index = 'index.html';
     this.app = 'app.js';
     this.templatesModuleName = 'templates-app';
@@ -34,7 +33,7 @@ var Paths = function() {
     this.custom = this.src + 'custom/';
     this.styles = this.src + 'styles/';
     this.images = this.src + 'images/';
-    this.api = 'api/';
+    this.api = this.src + 'api/';
 
     this.build = 'build/';
     this.buildStyles = this.build + 'styles/';
@@ -51,6 +50,7 @@ var Paths = function() {
 var paths = new Paths();
 
 var Files = function() {
+    this.api = paths.api + '**';
     this.src = paths.src + '**';
     this.index = paths.src + filenames.index;
     this.styles = paths.styles + '**';
@@ -119,10 +119,6 @@ sources.karma = [
 // ----------------------------
 // G E N E R A L   T A S K S
 // ----------------------------
-gulp.task('db', function() {
-    return gulp.src(paths.src + filenames.database)
-    .pipe(gulp.dest(paths.api));
-});
 
 gulp.task('lint', function() {
     return gulp.src(files.appScriptsAll)
@@ -231,6 +227,12 @@ gulp.task('build:index', ['build:css', 'build:js', 'build:indexcopy'], function(
     .pipe(plugins.notify({ message: 'Index task complete' }));
 });
 
+gulp.task('build:apicopy', function() {
+    return gulp.src(files.api)
+    .pipe(plugins.newer(paths.build + 'api/'))
+    .pipe(gulp.dest(paths.build + 'api/'));
+});
+
 // ----------------------------
 // D I S T
 // ----------------------------
@@ -315,6 +317,12 @@ gulp.task('dist:index', ['dist:css', 'dist:js', 'dist:indexcopy'], function() {
     .pipe(plugins.notify({ message: 'Index task complete' }));
 });
 
+gulp.task('dist:apicopy', function() {
+    return gulp.src(files.api)
+    .pipe(plugins.newer(paths.dist + 'api/'))
+    .pipe(gulp.dest(paths.dist + 'api/'));
+});
+
 // ----------------------------
 // ----------------------------
 // ----------------------------
@@ -323,7 +331,7 @@ gulp.task('dist:index', ['dist:css', 'dist:js', 'dist:indexcopy'], function() {
 // ----------------------------
 // ----------------------------
 var i;
-var buildTasks = ['css', 'js', 'images', 'fonts', 'i18n', 'index'];
+var buildTasks = ['css', 'js', 'images', 'fonts', 'i18n', 'index', 'apicopy'];
 var buildFastTask = [], buildTask = ['lint', 'test'], distTask = ['lint', 'test'];
 for (i = 0; i < buildTasks.length; i++) {
     buildFastTask.push('build:' + buildTasks[i]);

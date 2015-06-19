@@ -13,7 +13,6 @@ Execute the following command line statements inside the repository's root direc
 
 - Check out git repo
 - `npm install` installs local node modules in folder "node_modules"
-- `gulp db` sets up the database by copying an empty template of it from "src" folder to "api" folder
 - `gulp dist` creates the application in the "dist" folder
 - Open app in browser at web server location (e.g. http://localhost/shopper/dist)
 

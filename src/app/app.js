@@ -96,7 +96,7 @@ angular.module('shopper', [
     };
 })
 .service('Api', function(Session) {
-    this.url = '../api/';
+    this.url = 'api/';
 
     this.getParams = function() {
         var params = {};

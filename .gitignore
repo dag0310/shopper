@@ -1,11 +1,10 @@
 .DS_Store
 *.sw*
 *~
+_local
 build
 dist
 node_modules
-nbproject
 shopper
-api/*.db
 .project
 .htaccess

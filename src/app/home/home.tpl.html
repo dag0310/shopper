@@ -17,7 +17,7 @@
 <div id="outer">
     <!--Filtered products-->
     <div class="product-list" ng-show="!!productSearchQuery">
-        <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15" hm-tap="addProductToList(product)" ng-hide="isProductInList(product)">
+        <button class="product" ng-repeat="product in allProducts | productsFilter:productSearchQuery | limitTo:15" hm-tap="addProductToList(product)">
             {{product.name}}
             <br>
             &nbsp;<small>{{product.comment}}</small>&nbsp;
@@ -41,7 +41,7 @@
 
                     <!--Shopping list-->
                     <div class="product-list selected" ng-show="hasProducts(list.products, true)">
-                        <button class="product" ng-repeat="product in list.products" hm-tap="changeActiveStateOfProductFromList(product, 0)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
+                        <button class="product" ng-repeat="product in list.products" hm-tap="changeActiveStateOfProductFromList(product, false)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="product.active">
                             {{product.name}}
                             <br>
                             &nbsp;<small>{{product.comment}}</small>&nbsp;
@@ -52,7 +52,7 @@
                     <!--Last used products-->
                     <h4>{{'LAST_USED' | translate}}</h4>
                     <div class="product-list removed" ng-show="hasProducts(list.products, false)">
-                        <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at' | limitTo:10" hm-tap="changeActiveStateOfProductFromList(product, 1)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="! product.active">
+                        <button class="product" ng-repeat="product in list.products | orderBy:'-modified_at' | limitTo:10" hm-tap="changeActiveStateOfProductFromList(product, true)" ng-disabled="product.disabled" hm-hold="editComment(product, list)" ng-right-click="editComment(product, list)" ng-show="! product.active">
                             {{product.name}}
                             <br>
                             &nbsp;<small>{{product.comment}}</small>&nbsp;

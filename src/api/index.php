@@ -159,14 +159,14 @@ class ShopperAPI {
         $sql = "SELECT * FROM list WHERE id = '$list_id'";
         $list = $this->fetch_row($sql);
 
-        $list['users'] = $this->get_users_of_list();
+        $list['users'] = $this->get_users_of_list($list_id);
 
         return $list;
     }
     function get_users_of_list($list_id = NULL) {
-        if (! isset($list_id)) {
+        if (! isset($list_id))
             extract($this->get_params(array('list_id')));
-        }
+        
         $sql = ""
             . "SELECT u.* "
             . "FROM user u "
@@ -222,24 +222,17 @@ class ShopperAPI {
         return $this->db->exec($sql);
     }
     function add_product_to_list($product_id = NULL, $list_id = NULL, $comment = NULL) {
-        extract($this->get_params(array('product_id', 'list_id', 'comment')));
+        if (!isset($product_id) AND !isset($list_id) AND !isset($comment))
+            extract($this->get_params(array('product_id', 'list_id', 'comment')));
+        
         $sql = "INSERT INTO product_on_list ('product_id', 'list_id', 'comment', 'created_at', 'modified_at') VALUES ('$product_id', '$list_id', '$comment', $this->unix_timestamp, $this->unix_timestamp)";
         $success = $this->db->exec($sql);
         
-        
-        
-        if (! $success) {
-            $_GET['active'] = 1;
-            $success2 = $this->change_active_state_of_product_from_list();
-            $success3 = $this->change_comment();
-            return $success2 AND $success3;
-        }
-        
         return $success;
     }
-    function change_active_state_of_product_from_list($product_id = NULL, $list_id = NULL, $active = NULL) {
-        extract($this->get_params(array('product_id', 'list_id', 'active')));
-        $sql = "UPDATE product_on_list SET active = $active, modified_at = $this->unix_timestamp WHERE list_id = '$list_id' AND product_id = '$product_id'";
+    function change_active_state_of_product_from_list($product_on_list_id = NULL, $active = NULL) {
+        extract($this->get_params(array('product_on_list_id', 'active')));
+        $sql = "UPDATE product_on_list SET active = $active, modified_at = $this->unix_timestamp WHERE id = '$product_on_list_id'";
         return $this->db->exec($sql);
     }
     function move_list_one_position($list_id, $direction, $user_id) {
@@ -265,7 +258,8 @@ class ShopperAPI {
             extract($this->get_params(array('list_id')));
         }
         $sql = ""
-            . "SELECT p.*, pol.* "
+            //. "SELECT pol.id, pol.product_id, pol.list_id, pol.comment, pol.created_at, pol.modified_at, pol.active, p.name, p.category_id"
+            . "SELECT p.*, pol.*"
             . "FROM product_on_list pol "
             . "INNER JOIN product p ON (p.id = pol.product_id)"
             . "WHERE list_id = '$list_id' "
@@ -305,17 +299,15 @@ class ShopperAPI {
         extract($this->get_params(array('name', 'user_id')));
         $sql = "INSERT INTO product ('name', 'created_by', 'created_at', 'modified_at') VALUES ('$name', '$user_id', $this->unix_timestamp, $this->unix_timestamp)";
 
-        if ($this->db->exec($sql)) {
-            $_GET['product_id'] = $this->db->lastInsertRowID();
-            $_GET['comment'] = '';
-            return $this->add_product_to_list();
-        }
+        if ($this->db->exec($sql))
+            return $this->add_product_to_list($this->db->lastInsertRowID(), $list_id, '');
+        
         return FALSE;
     }
     
-    function change_comment($product_id = NULL, $list_id = NULL, $comment = NULL) {
-        extract($this->get_params(array('product_id', 'list_id', 'comment')));
-        $sql = "UPDATE product_on_list SET comment = '$comment', modified_at = $this->unix_timestamp WHERE product_id = '$product_id' AND list_id = '$list_id'";
+    function change_comment($product_on_list_id = NULL, $comment = NULL) {
+        extract($this->get_params(array('product_on_list_id', 'comment')));
+        $sql = "UPDATE product_on_list SET comment = '$comment', modified_at = $this->unix_timestamp WHERE id = '$product_on_list_id'";
         $this->db->exec($sql);
     }
 

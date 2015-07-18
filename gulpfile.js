@@ -348,11 +348,13 @@ gulp.task('watch', ['build'], function() {
     gulp.watch([files.appScripts], ['test']);
     gulp.watch(files.index, ['build:index']);
     gulp.watch([files.appStyles, files.styles], ['build:css']);
+    gulp.watch([files.api], ['build:apicopy']);
 });
 gulp.task('watch_fast', ['build_fast'], function() {
     gulp.watch([files.appScripts, files.templatesApp], ['build:js']);
     gulp.watch(files.index, ['build:index']);
     gulp.watch([files.appStyles, files.styles], ['build:css']);
+    gulp.watch([files.api], ['build:apicopy']);
 });
 
 gulp.task('default', ['watch']);

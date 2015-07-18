@@ -94,23 +94,22 @@ angular.module('shopper.home', [
         $scope.productSearchQuery = '';
     };
 
-    $scope.isProductInList = function(product) {
-        if (getCurrentList() === undefined) {
+    /*$scope.isProductInList = function(product) {
+        var currentList = getCurrentList();
+        
+        if (currentList === undefined) {
             return false;
         }
 
-        for (var i = 0; i < getCurrentList().products.length; i++) {
-            if (product.id === getCurrentList().products[i].id && getCurrentList().products[i].active) {
+        for (var i = 0; i < currentList.products.length; i++) {
+            if (product.product_id === currentList.products[i].product_id && currentList.products[i].active) {
                 return true;
             }
         }
         return false;
-    };
+    };*/
 
     $scope.addProductToList = function(product) {
-        if ($scope.isProductInList(product))
-            return;
-
         HomeService.addProductToList(product, getCurrentList()).then(function() {
             $scope.refresh();
         });
@@ -119,7 +118,7 @@ angular.module('shopper.home', [
     };
 
     $scope.changeActiveStateOfProductFromList = function(product, active) {
-        HomeService.changeActiveStateOfProductFromList(product, getCurrentList(), active);
+        HomeService.changeActiveStateOfProductFromList(product, active);
         getCurrentList().products[getCurrentList().products.indexOf(product)].disabled = true;
     };
 
@@ -178,7 +177,7 @@ angular.module('shopper.home', [
                 if (newComment === oldComment)
                     return;
                 product.disabled = true;
-                HomeService.changeComment(product, list, newComment).then(function () {
+                HomeService.changeComment(product, newComment).then(function () {
                     $scope.refresh();
                 });
             });
@@ -289,12 +288,11 @@ angular.module('shopper.home', [
         return $http.get(Api.url, { params: params });
     };
 
-    this.changeActiveStateOfProductFromList = function (product, list, active) {
+    this.changeActiveStateOfProductFromList = function (product, active) {
         var params = Api.getParams();
         params.cmd = 'change_active_state_of_product_from_list';
-        params.product_id = product.id;
-        params.list_id = list.id;
-        params.active = active;
+        params.product_on_list_id = product.id;
+        params.active = active ? 1 : 0;
         return $http.get(Api.url, { params: params });
     };
 
@@ -315,11 +313,10 @@ angular.module('shopper.home', [
         return $http.get(Api.url, { params: params });
     };
     
-    this.changeComment = function (product, list, comment) {
+    this.changeComment = function (product, comment) {
         var params = Api.getParams();
         params.cmd = 'change_comment';
-        params.product_id = product.id;
-        params.list_id = list.id;
+        params.product_on_list_id = product.id;
         params.comment = comment;
         params.user_id = Session.user.id;
         return $http.get(Api.url, { params: params });

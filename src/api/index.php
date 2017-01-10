@@ -59,7 +59,17 @@ class ShopperAPI {
 	 * @return object
 	 */
     function is_login_valid($email = NULL, $password = NULL) {
-        extract($this->get_params(array('email', 'password')));
+		if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+		    list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', base64_decode(substr($_SERVER['HTTP_AUTHORIZATION'], 6)));
+		}
+
+		if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
+		    return false;
+		}
+
+		$email = trim(strtolower($_SERVER['PHP_AUTH_USER']));
+		$password = $_SERVER['PHP_AUTH_PW'];
+		
         $sql = "SELECT COUNT(*) FROM user WHERE email = '$email' AND password = '$password'";
         $count = $this->fetch_value($sql);
         return $count > 0;

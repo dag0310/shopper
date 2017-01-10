@@ -296,6 +296,30 @@ class ShopperAPI {
         $new_hash = md5($all_products_sorted_json_string);
         return ($hash === $new_hash) ? NULL : $all_products;
     }
+	function get_all_products_no_hash($user_id = NULL) {
+        extract($this->get_params(array('user_id')));
+        $sql = ""
+            . "SELECT * "
+            . "FROM product "
+            . "WHERE created_by IS NULL "
+            . "OR created_by = '$user_id' "
+            . "ORDER BY category_id ASC, name ASC";
+        $all_products = $this->fetch_all($sql);
+        
+        $all_products_sorted = array();
+        foreach ($all_products as $product) {
+            $array_of_sorted_key_values = array();
+            $keys = array_keys($product);
+            sort($keys);
+            foreach ($keys as $key) {
+                array_push($array_of_sorted_key_values, $product[$key]);
+            }
+            array_push($all_products_sorted, $array_of_sorted_key_values);
+        }
+        $all_products_sorted_json_string = json_encode($all_products_sorted, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $new_hash = md5($all_products_sorted_json_string);
+        return $all_products;
+    }
     function get_all_products_created_by_user($user_id = NULL) {
         extract($this->get_params(array('user_id')));
         $sql = "SELECT * FROM product WHERE created_by = '$user_id'";
@@ -304,6 +328,17 @@ class ShopperAPI {
     function add_custom_product_to_list($name = NULL, $list_id = NULL, $user_id = NULL) {
         extract($this->get_params(array('name', 'user_id')));
         $sql = "INSERT INTO product ('name', 'created_by', 'created_at', 'modified_at') VALUES ('$name', '$user_id', $this->unix_timestamp, $this->unix_timestamp)";
+
+        if ($this->db->exec($sql)) {
+            $_GET['product_id'] = $this->db->lastInsertRowID();
+            $_GET['comment'] = '';
+            return $this->add_product_to_list();
+        }
+        return FALSE;
+    }
+	function add_custom_product_with_picture_to_list($image = NULL, $list_id = NULL, $user_id = NULL) {
+        extract($this->get_params(array('image', 'user_id')));
+        $sql = "INSERT INTO product ('name', 'image', 'created_by', 'created_at', 'modified_at') VALUES ('', '$image', '$user_id', $this->unix_timestamp, $this->unix_timestamp)";
 
         if ($this->db->exec($sql)) {
             $_GET['product_id'] = $this->db->lastInsertRowID();
